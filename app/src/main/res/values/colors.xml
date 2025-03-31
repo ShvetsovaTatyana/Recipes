@@ -2,7 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="blue_violet">#525DC0</color>
-    <color name="bright_red">#E13E3E</color>
-    <color name="sky_blue">#F4FAFF</color>
+    <color name="category_color">#525DC0</color>
+    <color name="favorites_color">#E13E3E</color>
+    <color name="screen_background_color">#F4FAFF</color>
 </resources>

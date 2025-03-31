@@ -5,61 +5,46 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4FAFF"
+    android:background="@color/screen_background_color"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
 
     <LinearLayout
+        android:id="@+id/containerForButtons"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginEnd="@dimen/margin_normal"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/margin_half"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <LinearLayout
-            android:id="@+id/container_for_buttons"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btnCategories"
+            style="@style/StyleNavButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:layout_weight="1"
+            android:backgroundTint="@color/category_color"
+            android:text="@string/categories" />
 
-            <Button
-                android:id="@+id/button_categories"
-                style="@style/StyleNavButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_normal"
-                android:layout_marginEnd="4dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/blue_violet"
-                android:paddingBottom="@dimen/margin_half"
-                android:text="@string/categories" />
+        <Space
+            android:layout_width="@dimen/space_quarter"
+            android:layout_height="wrap_content" />
 
-            <Button
-                android:id="@+id/button_favorites"
-                style="@style/StyleNavButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="@dimen/margin_normal"
-                android:layout_weight="1"
-                android:backgroundTint="@color/bright_red"
-                android:paddingBottom="@dimen/margin_half"
-                android:text="@string/favorites"
-                app:icon="@drawable/ic_heart_empty"
-                app:iconGravity="textEnd" />
-        </LinearLayout>
-
-
+        <Button
+            android:id="@+id/btnFavorites"
+            style="@style/StyleNavButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/favorites_color"
+            android:text="@string/favorites"
+            app:icon="@drawable/ic_heart_empty"
+            app:iconGravity="textEnd" />
     </LinearLayout>
 
 
