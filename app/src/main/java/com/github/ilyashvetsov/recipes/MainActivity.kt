@@ -16,8 +16,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         R.layout.activity_main
         if (savedInstanceState == null) {
-            val fragmentManager = supportFragmentManager
-            val fragmentTransaction = fragmentManager.beginTransaction()
             val categoriesFragment = CategoriesListFragment()
             supportFragmentManager.beginTransaction().commit {
                 addFragment(R.id.mainContainer, categoriesFragment)
