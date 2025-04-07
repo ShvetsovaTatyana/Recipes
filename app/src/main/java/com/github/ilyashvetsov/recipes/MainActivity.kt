@@ -1,7 +1,6 @@
 package com.github.ilyashvetsov.recipes
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
@@ -15,12 +14,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         if (savedInstanceState == null) {
         }
-        //supportFragmentManager.commit {
-        //    setReorderingAllowed(true)
-        //   add<CategoriesListFragment>(R.id.mainContainer)
-        // }
+
         binding.btnCategories.setOnClickListener {
-            Log.d("MainActivity", "Button clicked!")
             supportFragmentManager.commit {
                 replace<CategoriesListFragment>(
                     R.id.mainContainer
@@ -34,6 +29,8 @@ class MainActivity : AppCompatActivity() {
                 replace<FavoritesFragment>(
                     R.id.mainContainer
                 )
+                setReorderingAllowed(true)
+                addToBackStack("name")
             }
         }
 
