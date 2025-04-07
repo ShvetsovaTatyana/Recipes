@@ -2,6 +2,7 @@ package com.github.ilyashvetsov.recipes
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.github.ilyashvetsov.recipes.databinding.ActivityMainBinding
@@ -13,6 +14,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         if (savedInstanceState == null) {
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                add<CategoriesListFragment>(R.id.mainContainer)
+            }
         }
 
         binding.btnCategories.setOnClickListener {
@@ -21,7 +26,7 @@ class MainActivity : AppCompatActivity() {
                     R.id.mainContainer
                 )
                 setReorderingAllowed(true)
-                addToBackStack("name")
+                addToBackStack(null)
             }
         }
         binding.btnFavorites.setOnClickListener {
@@ -30,7 +35,7 @@ class MainActivity : AppCompatActivity() {
                     R.id.mainContainer
                 )
                 setReorderingAllowed(true)
-                addToBackStack("name")
+                addToBackStack(null)
             }
         }
 
