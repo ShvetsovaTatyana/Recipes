@@ -1,7 +1,7 @@
 package com.github.ilyashvetsov.recipes
 
 object STUB {
-    private var categories: List<Category> =
+    private val categories: List<Category> =
         listOf(
             Category(
                 0,
