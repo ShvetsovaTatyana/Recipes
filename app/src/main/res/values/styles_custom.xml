@@ -19,4 +19,17 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@color/page_content</item>
     </style>
+
+    <style name="TitleForCategory14" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/montserrat_alternates_semi_bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/page_content</item>
+    </style>
+
+    <style name="CategoryDescription12" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/montserrat_medium</item>
+        <item name="android:textColor">@color/category_description</item>
+    </style>
 </resources>

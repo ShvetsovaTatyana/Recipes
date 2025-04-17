@@ -2,7 +2,7 @@
 <resources>
     <dimen name="space_32">32dp</dimen>
     <dimen name="space_16">16dp</dimen>
-    <dimen name="space_10">16dp</dimen>
+    <dimen name="space_10">10dp</dimen>
     <dimen name="space_8">8dp</dimen>
     <dimen name="space_4">4dp</dimen>
 </resources>
