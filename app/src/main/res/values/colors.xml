@@ -6,4 +6,5 @@
     <color name="favorites_color">#E13E3E</color>
     <color name="screen_background_color">#F4FAFF</color>
     <color name="page_content">#5F3678</color>
+    <color name="category_description">#666666</color>
 </resources>

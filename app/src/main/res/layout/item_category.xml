@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/space_8"
+    android:layout_marginVertical="@dimen/space_16"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:id="@+id/ivCategory"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/rectangle" />
+
+        <TextView
+            android:id="@+id/tvTitleForCategory"
+            style="@style/TitleForCategory14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_8"
+            android:layout_marginTop="@dimen/space_8"
+            android:textSize="20sp"
+            tools:text="Заголовок" />
+
+        <TextView
+            android:id="@+id/tvCategoryDescription"
+            android:layout_width="match_parent"
+            style="@style/CategoryDescription12"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/space_8"
+            android:layout_marginTop="@dimen/space_8"
+            android:layout_marginBottom="@dimen/space_8"
+            tools:text="Описание" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
