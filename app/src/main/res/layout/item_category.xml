@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/space_8"
     android:layout_marginVertical="@dimen/space_16"
+    android:clickable="true"
     android:foreground="?attr/selectableItemBackground"
     app:cardCornerRadius="8dp"
     app:cardElevation="6dp">
@@ -35,8 +36,8 @@
 
         <TextView
             android:id="@+id/tvCategoryDescription"
-            android:layout_width="match_parent"
             style="@style/CategoryDescription12"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/space_8"
             android:layout_marginTop="@dimen/space_8"
