@@ -18,8 +18,12 @@ class CategoriesListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentListCategoriesBinding.inflate(inflater, container, false)
-        initRecycler(STUB.getCategories())
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initRecycler()
     }
 
     override fun onDestroyView() {
@@ -28,7 +32,8 @@ class CategoriesListFragment : Fragment() {
     }
 
 
-    private fun initRecycler(dataSet: List<Category>) {
+    private fun initRecycler() {
+        val dataSet = STUB.getCategories()
         val adapter = CategoriesListAdapter(dataSet)
         binding.rvCategories.adapter = adapter
     }

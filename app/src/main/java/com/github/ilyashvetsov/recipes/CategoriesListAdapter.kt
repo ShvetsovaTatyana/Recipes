@@ -1,10 +1,12 @@
 package com.github.ilyashvetsov.recipes
 
 import android.graphics.BitmapFactory
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.github.ilyashvetsov.recipes.databinding.FragmentListCategoriesBinding
 import com.github.ilyashvetsov.recipes.databinding.ItemCategoryBinding
 import java.io.IOException
 
@@ -28,9 +30,11 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
     class ViewHolder(private val binding: ItemCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Category) {
-            binding.tvCategoryDescription.text = item.description
+            binding.tvCategoryDescription.text = item.title
             binding.tvTitleForCategory.text = item.title
             loadImageFromAssets(item.imageUrl, binding.ivCategory)
+            binding.ivCategory.contentDescription =
+                String.format("Изображение категории %s", item.title)
         }
 
         private fun loadImageFromAssets(fileName: String, imageView: ImageView) {
@@ -42,7 +46,7 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
                 imageView.setImageBitmap(bitmap)
                 inputStream.close()
             } catch (e: IOException) {
-                e.printStackTrace()
+                Log.e("ImageLoadError", "Image not found: ${fileName}", e)
             }
         }
 
