@@ -31,7 +31,7 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
     class ViewHolder(private val binding: ItemCategoryBinding, private val context: Context) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Category) {
-            binding.tvCategoryDescription.text = item.title
+            binding.tvCategoryDescription.text = item.description
             binding.tvTitleForCategory.text = item.title
             loadImageFromAssets(item.imageUrl, binding.ivCategory)
             val categoryImage = context.getString(R.string.category_image)
