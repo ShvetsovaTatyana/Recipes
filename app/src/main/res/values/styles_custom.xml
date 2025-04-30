@@ -32,4 +32,11 @@
         <item name="android:fontFamily">@font/montserrat_medium</item>
         <item name="android:textColor">@color/category_description</item>
     </style>
+
+    <style name="TitleForCategory20" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">@font/montserrat_alternates_semi_bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/title_item_category</item>
+    </style>
 </resources>

@@ -1,14 +1,15 @@
 package com.github.ilyashvetsov.recipes
 
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.github.ilyashvetsov.recipes.databinding.FragmentListCategoriesBinding
 import com.github.ilyashvetsov.recipes.databinding.ItemCategoryBinding
 import java.io.IOException
+
 
 class CategoriesListAdapter(private val dataSet: List<Category>) :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
@@ -16,7 +17,7 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val categoryItemBinding = ItemCategoryBinding.inflate(layoutInflater, parent, false)
-        return ViewHolder(categoryItemBinding)
+        return ViewHolder(categoryItemBinding, parent.context)
     }
 
     override fun getItemCount(): Int {
@@ -27,14 +28,15 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
         holder.bind(dataSet[position])
     }
 
-    class ViewHolder(private val binding: ItemCategoryBinding) :
+    class ViewHolder(private val binding: ItemCategoryBinding, private val context: Context) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Category) {
             binding.tvCategoryDescription.text = item.title
             binding.tvTitleForCategory.text = item.title
             loadImageFromAssets(item.imageUrl, binding.ivCategory)
+            val categoryImage = context.getString(R.string.category_image)
             binding.ivCategory.contentDescription =
-                String.format("Изображение категории %s", item.title)
+                String.format(categoryImage, item.title)
         }
 
         private fun loadImageFromAssets(fileName: String, imageView: ImageView) {

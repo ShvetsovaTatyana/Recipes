@@ -27,12 +27,11 @@
 
         <TextView
             android:id="@+id/tvTitleForCategory"
-            style="@style/TitleForCategory14"
+            style="@style/TitleForCategory20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_8"
             android:layout_marginTop="@dimen/space_8"
-            android:textSize="@dimen/space_20"
             tools:text="Заголовок" />
 
         <TextView
