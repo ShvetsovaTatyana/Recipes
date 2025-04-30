@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import com.github.ilyashvetsov.recipes.databinding.FragmentListCategoriesBinding
 
 class CategoriesListFragment : Fragment() {
@@ -18,11 +19,22 @@ class CategoriesListFragment : Fragment() {
     ): View {
         _binding = FragmentListCategoriesBinding.inflate(inflater, container, false)
         return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initRecycler()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+
+    private fun initRecycler() {
+        val dataSet = STUB.getCategories()
+        val adapter = CategoriesListAdapter(dataSet)
+        binding.rvCategories.adapter = adapter
     }
 }

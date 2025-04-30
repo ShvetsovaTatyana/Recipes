@@ -6,9 +6,11 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/space_8"
     android:layout_marginVertical="@dimen/space_16"
+    android:clickable="true"
+    android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="6dp">
+    app:cardCornerRadius="@dimen/space_8"
+    app:cardElevation="@dimen/space_6">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,24 +21,23 @@
         <ImageView
             android:id="@+id/ivCategory"
             android:layout_width="match_parent"
-            android:layout_height="130dp"
+            android:layout_height="@dimen/space_130"
             android:scaleType="centerCrop"
             android:src="@drawable/rectangle" />
 
         <TextView
             android:id="@+id/tvTitleForCategory"
-            style="@style/TitleForCategory14"
+            style="@style/TitleForCategory20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_8"
             android:layout_marginTop="@dimen/space_8"
-            android:textSize="20sp"
             tools:text="Заголовок" />
 
         <TextView
             android:id="@+id/tvCategoryDescription"
-            android:layout_width="match_parent"
             style="@style/CategoryDescription12"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/space_8"
             android:layout_marginTop="@dimen/space_8"

@@ -4,6 +4,7 @@
     <string name="favorites">Избранное</string>
     <string name="title">Заголовок</string>
     <string name="description">Описание</string>
+    <string name="category_image">Изображение категории %s</string>
 
 
 </resources>
