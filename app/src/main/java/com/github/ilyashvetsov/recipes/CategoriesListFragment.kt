@@ -45,8 +45,8 @@ class CategoriesListFragment : Fragment() {
         binding.rvCategories.adapter = adapter
     }
 
-    fun openRecipesByCategoryId() {
-        requireActivity().supportFragmentManager.commit {
+    private fun openRecipesByCategoryId() {
+        parentFragmentManager.commit {
             replace<RecipesListFragment>(
                 R.id.mainContainer
             )

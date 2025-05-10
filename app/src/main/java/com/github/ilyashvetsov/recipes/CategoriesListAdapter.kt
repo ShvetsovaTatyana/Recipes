@@ -43,9 +43,8 @@ class CategoriesListAdapter(
             binding.tvCategoryDescription.text = item.description
             binding.tvTitleForCategory.text = item.title
             loadImageFromAssets(item.imageUrl, binding.ivCategory)
-            val categoryImage = itemView.context.getString(R.string.category_image)
-            binding.ivCategory.contentDescription =
-                String.format(categoryImage, item.title)
+            val categoryImage = itemView.context.getString(R.string.category_image, item.title)
+            binding.ivCategory.contentDescription = categoryImage
             itemView.setOnClickListener { itemClickListener?.onItemClick() }
         }
 
