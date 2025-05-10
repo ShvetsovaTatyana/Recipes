@@ -15,7 +15,7 @@ class CategoriesListAdapter(
 ) :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
     interface OnItemClickListener {
-        fun onItemClick()
+        fun onItemClick(categoryId: Int)
     }
 
     var itemClickListener: OnItemClickListener? = null
@@ -45,7 +45,7 @@ class CategoriesListAdapter(
             loadImageFromAssets(item.imageUrl, binding.ivCategory)
             val categoryImage = itemView.context.getString(R.string.category_image, item.title)
             binding.ivCategory.contentDescription = categoryImage
-            itemView.setOnClickListener { itemClickListener?.onItemClick() }
+            itemView.setOnClickListener { itemClickListener?.onItemClick(item.id) }
         }
 
         private fun loadImageFromAssets(fileName: String, imageView: ImageView) {
