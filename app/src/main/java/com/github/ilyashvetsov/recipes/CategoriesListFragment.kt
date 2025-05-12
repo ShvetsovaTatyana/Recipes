@@ -5,14 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
+import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.github.ilyashvetsov.recipes.databinding.FragmentListCategoriesBinding
-
-const val ARG_CATEGORY_ID = "ARG_CATEGORY_ID"
-const val ARG_CATEGORY_NAME = "ARG_CATEGORY_NAME"
-const val ARG_CATEGORY_IMAGE_URL = "ARG_CATEGORY_IMAGE_URL"
 
 class CategoriesListFragment : Fragment() {
     private var _binding: FragmentListCategoriesBinding? = null
@@ -54,10 +50,11 @@ class CategoriesListFragment : Fragment() {
             STUB.getCategories().filter { category -> category.id == categoryId }[0].title
         val categoryImageUrl =
             STUB.getCategories().filter { category -> category.id == categoryId }[0].imageUrl
-        val bundle = Bundle()
-        bundle.putInt(ARG_CATEGORY_ID, categoryId)
-        bundle.putString(ARG_CATEGORY_NAME, categoryName)
-        bundle.putString(ARG_CATEGORY_IMAGE_URL, categoryImageUrl)
+        val bundle = bundleOf(
+            ARG_CATEGORY_ID to categoryId,
+            ARG_CATEGORY_NAME to categoryName,
+            ARG_CATEGORY_IMAGE_URL to categoryImageUrl,
+        )
         parentFragmentManager.commit {
             replace<RecipesListFragment>(
                 R.id.mainContainer,
