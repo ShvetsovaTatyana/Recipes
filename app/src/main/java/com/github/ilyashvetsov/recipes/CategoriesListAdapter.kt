@@ -1,13 +1,9 @@
 package com.github.ilyashvetsov.recipes
 
-import android.graphics.BitmapFactory
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ilyashvetsov.recipes.databinding.ItemCategoryBinding
-import java.io.IOException
 
 
 class CategoriesListAdapter(
@@ -18,7 +14,7 @@ class CategoriesListAdapter(
         fun onItemClick(categoryId: Int)
     }
 
-    var itemClickListener: OnItemClickListener? = null
+    private var itemClickListener: OnItemClickListener? = null
     fun setOnItemClickListener(listener: OnItemClickListener) {
         itemClickListener = listener
     }
@@ -47,19 +43,5 @@ class CategoriesListAdapter(
             binding.ivCategory.contentDescription = categoryImage
             itemView.setOnClickListener { itemClickListener?.onItemClick(item.id) }
         }
-
-        private fun loadImageFromAssets(fileName: String, imageView: ImageView) {
-            val context = imageView.context
-            val assetManager = context.assets
-            try {
-                val inputStream = assetManager.open(fileName)
-                val bitmap = BitmapFactory.decodeStream(inputStream)
-                imageView.setImageBitmap(bitmap)
-                inputStream.close()
-            } catch (e: IOException) {
-                Log.e("ImageLoadError", "Image not found: $fileName", e)
-            }
-        }
-
     }
 }
