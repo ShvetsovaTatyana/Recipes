@@ -36,6 +36,7 @@
             style="@style/StyleNavButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/space_8"
             android:layout_weight="1"
             android:backgroundTint="@color/category_color"
             android:text="@string/categories" />
