@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.github.ilyashvetsov.recipes.databinding.FragmentRecipesListBinding
@@ -22,6 +23,7 @@ class RecipesListFragment : Fragment() {
     ): View {
         _binding = FragmentRecipesListBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,17 +54,22 @@ class RecipesListFragment : Fragment() {
         val adapter = dataSetRecipe?.let {
             CategoryListRecipesAdapter(
                 it,
-                onItemClick = { openRecipeByRecipeId() }
+                onItemClick = { openRecipeByRecipeId(id = it) }
             )
         }
         binding.rvCategories.adapter = adapter
     }
 
-    private fun openRecipeByRecipeId() {
+    private fun openRecipeByRecipeId(id: Int) {
+        val recipe = STUB.getRecipeById(id)
+        val bundle = bundleOf(ARG_RECIPE to recipe)
         parentFragmentManager.commit {
             replace<RecipeFragment>(
-                R.id.mainContainer
+                R.id.mainContainer,
+                args = bundle
             )
+            setReorderingAllowed(true)
+            addToBackStack(null)
         }
     }
 }
