@@ -6,11 +6,12 @@
     tools:context=".RecipeFragment">
 
     <TextView
+        android:id="@+id/nameRecipe"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingStart="@dimen/space_16"
         android:paddingTop="@dimen/space_100"
-        android:text="Карточка рецепта"
-        tools:ignore="RtlSymmetry" />
+        tools:ignore="RtlSymmetry"
+        tools:text="Карточка рецепта" />
 
 </FrameLayout>
