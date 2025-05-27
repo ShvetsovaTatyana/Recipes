@@ -6,7 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.github.ilyashvetsov.recipes.databinding.FragmentRecipeBinding
+import com.google.android.material.divider.MaterialDividerItemDecoration
 
 
 class RecipeFragment : Fragment() {
@@ -28,14 +31,47 @@ class RecipeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.nameRecipe.text = recipe?.title
+        initRecycler()
+        initUI()
+    }
+
+    private fun initUI() {
+        binding.tvRecipe.text = recipe?.title
+        recipe?.imageUrl?.let {
+            loadImageFromAssets(
+                fileName = it,
+                imageView = binding.ivRecipe
+            )
+        }
+    }
+
+
+    private fun initRecycler() {
+        val adapter = recipe?.ingredients?.let { IngredientsAdapter(dataSetIngredient = it) }
+        binding.rvIngredients.adapter = adapter
+        val adapterMethod = recipe?.method?.let { MethodAdapter(dataSetCookingMethod = it) }
+        binding.rvMethod.adapter = adapterMethod
+        val divider = MaterialDividerItemDecoration(
+            requireContext(),
+            DividerItemDecoration.VERTICAL
+        )
+        divider.setDividerColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.list_separator
+            )
+        )
+        divider.dividerThickness = 1
+        binding.rvIngredients.addItemDecoration(divider)
+        binding.rvMethod.addItemDecoration(divider)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentRecipeBinding.inflate(inflater, container, false)
         return binding.root
     }
+
 }

@@ -266,6 +266,7 @@ object STUB {
         return categories
     }
 
+
     fun getRecipesByCategoryId(categoryId: Int): List<Recipe> {
         return if (categoryId == 0)
             burgerRecipes
@@ -278,4 +279,5 @@ object STUB {
         return recipe
 
     }
+
 }

@@ -5,12 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/screen_background_color"
-    android:orientation="vertical"
-    tools:context=".RecipesListFragment">
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="224dp"
+        android:layout_height="@dimen/space_224"
         android:layout_marginTop="@dimen/space_32">
 
         <ImageView
