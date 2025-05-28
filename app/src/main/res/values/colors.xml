@@ -8,4 +8,7 @@
     <color name="page_content">#5F3678</color>
     <color name="category_description">#666666</color>
     <color name="title_item_category">#422952</color>
+    <color name="seek_bar">#A1A9F9</color>
+    <color name="slider">#525DC0</color>
+    <color name="list_separator">#F5F5F5</color>
 </resources>
