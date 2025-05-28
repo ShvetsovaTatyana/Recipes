@@ -6,10 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.github.ilyashvetsov.recipes.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import kotlin.math.max
 
 
 class RecipeFragment : Fragment() {
@@ -47,7 +49,8 @@ class RecipeFragment : Fragment() {
 
 
     private fun initRecycler() {
-        val adapter = recipe?.ingredients?.let { IngredientsAdapter(dataSetIngredient = it) }
+        val adapter =
+            recipe?.ingredients?.let { IngredientsAdapter(dataSetIngredient = it) }
         binding.rvIngredients.adapter = adapter
         val adapterMethod = recipe?.method?.let { MethodAdapter(dataSetCookingMethod = it) }
         binding.rvMethod.adapter = adapterMethod
@@ -64,6 +67,20 @@ class RecipeFragment : Fragment() {
         divider.dividerThickness = 1
         binding.rvIngredients.addItemDecoration(divider)
         binding.rvMethod.addItemDecoration(divider)
+        binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, p2: Boolean) {
+                adapter?.updateIngredients(progress)
+                binding.tvNumberOfServings.text = "Порции: ${progress}"
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+
+            }
+        })
     }
 
     override fun onCreateView(
