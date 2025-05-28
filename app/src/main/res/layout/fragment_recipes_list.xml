@@ -45,5 +45,4 @@
         app:spanCount="1"
         tools:itemCount="8"
         tools:listitem="@layout/item_category_recipes" />
-
 </LinearLayout>

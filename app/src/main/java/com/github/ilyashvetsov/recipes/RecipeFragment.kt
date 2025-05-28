@@ -1,5 +1,6 @@
 package com.github.ilyashvetsov.recipes
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -65,6 +66,8 @@ class RecipeFragment : Fragment() {
             )
         )
         divider.dividerThickness = 1
+        divider.dividerInsetStart = dpToPx(12f, requireContext())
+        divider.dividerInsetEnd = dpToPx(12f, requireContext())
         binding.rvIngredients.addItemDecoration(divider)
         binding.rvMethod.addItemDecoration(divider)
         binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -82,6 +85,12 @@ class RecipeFragment : Fragment() {
             }
         })
     }
+
+    private fun dpToPx(dp: Float, context: Context): Int {
+        val density = context.resources.displayMetrics.density
+        return (dp * density).toInt()
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

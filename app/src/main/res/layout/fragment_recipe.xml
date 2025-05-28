@@ -17,7 +17,6 @@
             android:layout_height="@dimen/space_224"
             android:layout_marginTop="@dimen/space_32">
 
-
             <ImageView
                 android:id="@+id/ivRecipe"
                 android:layout_width="match_parent"
@@ -49,8 +48,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_heart" />
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -90,7 +87,9 @@
             android:layout_marginHorizontal="@dimen/space_16"
             android:layout_marginTop="@dimen/space_16"
             android:background="@color/white"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_ingredients" />
 
         <TextView
             android:id="@+id/tvCookingMethod"
@@ -109,8 +108,10 @@
             android:layout_marginHorizontal="@dimen/space_16"
             android:layout_marginTop="@dimen/space_16"
             android:background="@color/white"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:paddingVertical="@dimen/space_4"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="5"
+            tools:listitem="@layout/item_cooking_method" />
     </LinearLayout>
-
 </androidx.core.widget.NestedScrollView>
 
