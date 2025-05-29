@@ -36,6 +36,8 @@ class RecipeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecycler()
         initUI()
+        val contentDescription = "Изображение рецепта \"${recipe?.title}\""
+        binding.ivRecipe.contentDescription = contentDescription
     }
 
     private fun initUI() {
@@ -73,7 +75,7 @@ class RecipeFragment : Fragment() {
         binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, p2: Boolean) {
                 adapter?.updateIngredients(progress)
-                binding.tvNumberOfServings.text = "Порции: ${progress}"
+                binding.tvProgress.text = "${progress}"
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {

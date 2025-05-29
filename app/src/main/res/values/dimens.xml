@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="space_242">242dp</dimen>
     <dimen name="space_224">224dp</dimen>
     <dimen name="space_130">130dp</dimen>
     <dimen name="space_100">100dp</dimen>
