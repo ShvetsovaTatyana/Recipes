@@ -24,7 +24,7 @@
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/montserrat_alternates_semi_bold_600</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:textColor">@color/title_item_category</item>
+        <item name="android:textColor">@color/page_content</item>
     </style>
 
     <style name="CategoryDescription12" parent="TextAppearance.AppCompat">
@@ -37,7 +37,7 @@
         <item name="android:textSize">20sp</item>
         <item name="android:fontFamily">@font/montserrat_alternates_semi_bold_600</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:textColor">@color/title_item_category</item>
+        <item name="android:textColor">@color/page_content</item>
     </style>
 
     <style name="NumberOfServings" parent="TextAppearance.AppCompat">

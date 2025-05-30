@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ilyashvetsov.recipes.databinding.ItemCookingMethodBinding
 
-
 class MethodAdapter(
     private val dataSetCookingMethod: List<String>,
 ) :
@@ -33,7 +32,6 @@ class MethodAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: String) {
             binding.tvCookingMethod.text = "${getAdapterPosition() + 1}. $item"
-
         }
     }
 }

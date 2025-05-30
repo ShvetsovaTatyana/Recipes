@@ -1,16 +1,17 @@
 package com.github.ilyashvetsov.recipes
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.github.ilyashvetsov.recipes.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
-
 
 class RecipeFragment : Fragment() {
     private var _binding: FragmentRecipeBinding? = null
@@ -43,11 +44,13 @@ class RecipeFragment : Fragment() {
                 imageView = binding.ivRecipe
             )
         }
+        val contentDescription = "Изображение рецепта \"${recipe?.title}\""
+        binding.ivRecipe.contentDescription = contentDescription
     }
 
-
     private fun initRecycler() {
-        val adapter = recipe?.ingredients?.let { IngredientsAdapter(dataSetIngredient = it) }
+        val adapter =
+            recipe?.ingredients?.let { IngredientsAdapter(dataSetIngredient = it) }
         binding.rvIngredients.adapter = adapter
         val adapterMethod = recipe?.method?.let { MethodAdapter(dataSetCookingMethod = it) }
         binding.rvMethod.adapter = adapterMethod
@@ -61,9 +64,28 @@ class RecipeFragment : Fragment() {
                 R.color.list_separator
             )
         )
-        divider.dividerThickness = 1
+        divider.dividerThickness = resources.getDimensionPixelSize(R.dimen.space_1)
+        divider.dividerInsetStart = resources.getDimensionPixelOffset(R.dimen.space_12)
+        divider.dividerInsetEnd = resources.getDimensionPixelOffset(R.dimen.space_12)
         binding.rvIngredients.addItemDecoration(divider)
         binding.rvMethod.addItemDecoration(divider)
+        binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, p2: Boolean) {
+                adapter?.updateIngredients(progress)
+                binding.tvProgress.text = "${progress}"
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+            }
+        })
+    }
+
+    private fun dpToPx(dp: Float, context: Context): Int {
+        val density = context.resources.displayMetrics.density
+        return (dp * density).toInt()
     }
 
     override fun onCreateView(
@@ -73,5 +95,4 @@ class RecipeFragment : Fragment() {
         _binding = FragmentRecipeBinding.inflate(inflater, container, false)
         return binding.root
     }
-
 }
