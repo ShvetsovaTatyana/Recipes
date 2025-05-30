@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ilyashvetsov.recipes.databinding.ItemIngredientsBinding
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class IngredientsAdapter(
     private val dataSetIngredient: List<Ingredient>,
@@ -37,16 +39,17 @@ class IngredientsAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Ingredient, quantity: Int) {
             binding.tvIngredient.text = item.ingredient
-            val totalQuantity = item.quantity.toDouble() * quantity
-            if (totalQuantity.rem(1.0) != 0.0) {
-                val totalQuantityFormat = String.format("%.1f", totalQuantity)
-                binding.tvAmountOfIngredient.text =
-                    "$totalQuantityFormat ${item.unitOfMeasure}"
-            } else
-                binding.tvAmountOfIngredient.text =
-                    "${totalQuantity.toInt()} ${item.unitOfMeasure}"
+            val itemQuantityBigDecimal = BigDecimal(item.quantity)
+            val quantityBigDecimal = BigDecimal(quantity)
+            val totalQuantity = itemQuantityBigDecimal.multiply(quantityBigDecimal)
+            if (!totalQuantity.remainder(BigDecimal.ONE).stripTrailingZeros()
+                    .equals(BigDecimal.ZERO)
+            ) {
+                val totalQuantityFormat = totalQuantity.setScale(1, RoundingMode.HALF_UP).toString()
+                binding.tvAmountOfIngredient.text = "$totalQuantityFormat ${item.unitOfMeasure}"
+            } else {
+                binding.tvAmountOfIngredient.text = "${totalQuantity.toInt()} ${item.unitOfMeasure}"
+            }
         }
-
-
     }
 }

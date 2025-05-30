@@ -12,8 +12,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.github.ilyashvetsov.recipes.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
-import kotlin.math.max
-
 
 class RecipeFragment : Fragment() {
     private var _binding: FragmentRecipeBinding? = null
@@ -36,8 +34,6 @@ class RecipeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecycler()
         initUI()
-        val contentDescription = "Изображение рецепта \"${recipe?.title}\""
-        binding.ivRecipe.contentDescription = contentDescription
     }
 
     private fun initUI() {
@@ -48,8 +44,9 @@ class RecipeFragment : Fragment() {
                 imageView = binding.ivRecipe
             )
         }
+        val contentDescription = "Изображение рецепта \"${recipe?.title}\""
+        binding.ivRecipe.contentDescription = contentDescription
     }
-
 
     private fun initRecycler() {
         val adapter =
@@ -67,9 +64,9 @@ class RecipeFragment : Fragment() {
                 R.color.list_separator
             )
         )
-        divider.dividerThickness = 1
-        divider.dividerInsetStart = dpToPx(12f, requireContext())
-        divider.dividerInsetEnd = dpToPx(12f, requireContext())
+        divider.dividerThickness = resources.getDimensionPixelSize(R.dimen.space_1)
+        divider.dividerInsetStart = resources.getDimensionPixelOffset(R.dimen.space_12)
+        divider.dividerInsetEnd = resources.getDimensionPixelOffset(R.dimen.space_12)
         binding.rvIngredients.addItemDecoration(divider)
         binding.rvMethod.addItemDecoration(divider)
         binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -79,11 +76,9 @@ class RecipeFragment : Fragment() {
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
-
             }
 
             override fun onStopTrackingTouch(p0: SeekBar?) {
-
             }
         })
     }
@@ -93,7 +88,6 @@ class RecipeFragment : Fragment() {
         return (dp * density).toInt()
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -101,5 +95,4 @@ class RecipeFragment : Fragment() {
         _binding = FragmentRecipeBinding.inflate(inflater, container, false)
         return binding.root
     }
-
 }
