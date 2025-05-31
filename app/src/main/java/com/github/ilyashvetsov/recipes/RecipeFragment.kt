@@ -83,11 +83,6 @@ class RecipeFragment : Fragment() {
         })
     }
 
-    private fun dpToPx(dp: Float, context: Context): Int {
-        val density = context.resources.displayMetrics.density
-        return (dp * density).toInt()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

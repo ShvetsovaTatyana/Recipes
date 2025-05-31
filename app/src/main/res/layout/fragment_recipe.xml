@@ -93,13 +93,12 @@
 
         <SeekBar
             android:id="@+id/seekBar"
+            style="@style/styleSeekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:max="5"
             android:min="1"
-            android:progress="1"
-            android:progressDrawable="@drawable/rounded_seekbar"
-            android:thumb="@drawable/thumb_rectangle" />
+            android:progress="1" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvIngredients"

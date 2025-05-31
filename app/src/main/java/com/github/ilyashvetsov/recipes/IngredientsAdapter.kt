@@ -39,17 +39,12 @@ class IngredientsAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Ingredient, quantity: Int) {
             binding.tvIngredient.text = item.ingredient
-            val itemQuantityBigDecimal = BigDecimal(item.quantity)
-            val quantityBigDecimal = BigDecimal(quantity)
-            val totalQuantity = itemQuantityBigDecimal.multiply(quantityBigDecimal)
-            if (!totalQuantity.remainder(BigDecimal.ONE).stripTrailingZeros()
-                    .equals(BigDecimal.ZERO)
-            ) {
-                val totalQuantityFormat = totalQuantity.setScale(1, RoundingMode.HALF_UP).toString()
-                binding.tvAmountOfIngredient.text = "$totalQuantityFormat ${item.unitOfMeasure}"
-            } else {
-                binding.tvAmountOfIngredient.text = "${totalQuantity.toInt()} ${item.unitOfMeasure}"
-            }
+            val displayQuantity = BigDecimal(item.quantity)
+                .multiply(BigDecimal(quantity))
+                .setScale(1, RoundingMode.HALF_UP)
+                .stripTrailingZeros()
+                .toPlainString()
+            binding.tvAmountOfIngredient.text = "$displayQuantity ${item.unitOfMeasure}"
         }
     }
 }
