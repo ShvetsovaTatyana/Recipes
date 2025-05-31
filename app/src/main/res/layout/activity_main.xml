@@ -56,6 +56,4 @@
             app:icon="@drawable/ic_heart_empty"
             app:iconGravity="textEnd" />
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

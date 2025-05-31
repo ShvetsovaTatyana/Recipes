@@ -9,8 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/space_224"
-        android:layout_marginTop="@dimen/space_32">
+        android:layout_height="@dimen/space_224">
 
         <ImageView
             android:id="@+id/ivRecipeCategory"
@@ -45,5 +44,4 @@
         app:spanCount="1"
         tools:itemCount="8"
         tools:listitem="@layout/item_category_recipes" />
-
 </LinearLayout>
