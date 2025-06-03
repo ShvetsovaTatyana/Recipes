@@ -47,16 +47,15 @@ class RecipeFragment : Fragment() {
         }
         val contentDescription = "Изображение рецепта \"${recipe?.title}\""
         binding.ivRecipe.contentDescription = contentDescription
-        val ivHeart: ImageView = requireView().findViewById(R.id.ivHeart)
-        ivHeart.setImageResource(R.drawable.ic_heart_empty)
-        binding.ivHeart.setOnClickListener { colorTheHeart() }
+        binding.ibFavorites.setImageResource(R.drawable.ic_heart_empty)
+        binding.ibFavorites.setOnClickListener { colorTheHeart() }
     }
 
     private fun colorTheHeart() {
         if (isPaintedHeart)
-            binding.ivHeart.setImageResource(R.drawable.ic_heart)
+            binding.ibFavorites.setImageResource(R.drawable.ic_heart)
         else
-            binding.ivHeart.setImageResource(R.drawable.ic_heart_empty)
+            binding.ibFavorites.setImageResource(R.drawable.ic_heart_empty)
         isPaintedHeart = !isPaintedHeart
     }
 
