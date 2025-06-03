@@ -40,15 +40,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="Бургер с грибами и сыром" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/ivHeart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/space_40"
+                android:layout_height="@dimen/space_40"
                 android:layout_marginTop="@dimen/space_16"
                 android:layout_marginEnd="@dimen/space_16"
+                android:background="@drawable/ripple_effect"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_heart" />
+                tools:src="@drawable/ic_heart" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
