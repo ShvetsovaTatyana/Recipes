@@ -1,12 +1,12 @@
 package com.github.ilyashvetsov.recipes
 
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -18,6 +18,7 @@ class RecipeFragment : Fragment() {
     private val binding
         get() = _binding ?: throw IllegalStateException("Binding is not initialized")
     private var recipe: Recipe? = null
+    private var isPaintedHeart = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +47,16 @@ class RecipeFragment : Fragment() {
         }
         val contentDescription = "Изображение рецепта \"${recipe?.title}\""
         binding.ivRecipe.contentDescription = contentDescription
+        binding.ibFavorites.setImageResource(R.drawable.ic_heart_empty)
+        binding.ibFavorites.setOnClickListener { colorTheHeart() }
+    }
+
+    private fun colorTheHeart() {
+        if (isPaintedHeart)
+            binding.ibFavorites.setImageResource(R.drawable.ic_heart)
+        else
+            binding.ibFavorites.setImageResource(R.drawable.ic_heart_empty)
+        isPaintedHeart = !isPaintedHeart
     }
 
     private fun initRecycler() {
@@ -72,7 +83,7 @@ class RecipeFragment : Fragment() {
         binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, p2: Boolean) {
                 adapter?.updateIngredients(progress)
-                binding.tvProgress.text = "${progress}"
+                binding.tvProgress.text = "$progress"
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {

@@ -4,6 +4,7 @@
     <dimen name="space_224">224dp</dimen>
     <dimen name="space_130">130dp</dimen>
     <dimen name="space_100">100dp</dimen>
+    <dimen name="space_40">40dp</dimen>
     <dimen name="space_32">32dp</dimen>
     <dimen name="space_30">30dp</dimen>
     <dimen name="space_20">20sp</dimen>
