@@ -1,14 +1,15 @@
 package com.github.ilyashvetsov.recipes
 
+import android.content.Context.MODE_PRIVATE
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.SeekBar
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.github.ilyashvetsov.recipes.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
@@ -18,7 +19,6 @@ class RecipeFragment : Fragment() {
     private val binding
         get() = _binding ?: throw IllegalStateException("Binding is not initialized")
     private var recipe: Recipe? = null
-    private var isPaintedHeart = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +29,7 @@ class RecipeFragment : Fragment() {
                 it.getParcelable(ARG_RECIPE)
             }
         }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,15 +49,19 @@ class RecipeFragment : Fragment() {
         val contentDescription = "Изображение рецепта \"${recipe?.title}\""
         binding.ivRecipe.contentDescription = contentDescription
         binding.ibFavorites.setImageResource(R.drawable.ic_heart_empty)
-        binding.ibFavorites.setOnClickListener { colorTheHeart() }
+        binding.ibFavorites.setOnClickListener {
+            colorTheHeart()
+            changeFavorites()
+        }
+        if (getFavorites().contains(recipe?.id.toString()))
+            binding.ibFavorites.setImageResource(R.drawable.ic_heart)
     }
 
     private fun colorTheHeart() {
-        if (isPaintedHeart)
+        if (!getFavorites().contains(recipe?.id.toString())) {
             binding.ibFavorites.setImageResource(R.drawable.ic_heart)
-        else
+        } else
             binding.ibFavorites.setImageResource(R.drawable.ic_heart_empty)
-        isPaintedHeart = !isPaintedHeart
     }
 
     private fun initRecycler() {
@@ -92,6 +97,34 @@ class RecipeFragment : Fragment() {
             override fun onStopTrackingTouch(p0: SeekBar?) {
             }
         })
+    }
+
+    private fun saveFavorites(dataSetString: Set<String>) {
+        val sharedPrefs =
+            requireActivity().getSharedPreferences(SHARED_PREFS_SET_FAVORITES_RECIPE, MODE_PRIVATE)
+        sharedPrefs
+            .edit()
+            .putStringSet(FAVORITES_RECIPE_KEY, dataSetString)
+            .apply()
+    }
+
+    private fun getFavorites(): MutableSet<String> {
+        val sharedPrefs =
+            requireActivity().getSharedPreferences(SHARED_PREFS_SET_FAVORITES_RECIPE, MODE_PRIVATE)
+        val dataSetString = sharedPrefs.getStringSet(FAVORITES_RECIPE_KEY, mutableSetOf())
+        val newDataSetString = HashSet(dataSetString ?: mutableSetOf())
+        return newDataSetString
+    }
+
+    private fun changeFavorites() {
+        val favoritesRecipe = getFavorites()
+        if (getFavorites().contains(recipe?.id.toString())) {
+            favoritesRecipe.remove(recipe?.id.toString())
+            saveFavorites(favoritesRecipe)
+        } else {
+            favoritesRecipe.add(recipe?.id.toString())
+            saveFavorites(favoritesRecipe)
+        }
     }
 
     override fun onCreateView(
