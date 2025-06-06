@@ -31,6 +31,13 @@ class FavoritesFragment : Fragment() {
 
     private fun initRecycler() {
         val dataSetRecipe = getFavorites()
+        if (dataSetRecipe.isEmpty()) {
+            binding.tvPlaceholder.visibility = View.VISIBLE
+            binding.rvFavorites.visibility = View.GONE
+        } else {
+            binding.rvFavorites.visibility = View.VISIBLE
+            binding.tvPlaceholder.visibility = View.GONE
+        }
         val adapter = CategoryListRecipesAdapter(
             STUB.getRecipesByIds(dataSetRecipe.map { it.toInt() }.toSet()),
             onItemClick = { openRecipeByRecipeId(id = it) }

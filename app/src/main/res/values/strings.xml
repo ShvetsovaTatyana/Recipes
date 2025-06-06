@@ -11,6 +11,7 @@
     <string name="cooking_method">Способ приготовления</string>
     <string name="portions">Порции:</string>
     <string name="progress">1</string>
+    <string name="text_placeholder">Вы еще не добавили ни одного рецепта в избранное</string>
 
 
 </resources>
