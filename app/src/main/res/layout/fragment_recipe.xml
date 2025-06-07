@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space_16"
                 android:layout_marginBottom="@dimen/space_16"
-                android:background="@drawable/rounded_background"
+                android:background="@drawable/tv_rounded_background"
                 android:gravity="start"
                 android:paddingHorizontal="@dimen/space_10"
                 android:paddingVertical="@dimen/space_10"
@@ -104,23 +104,16 @@
             android:min="1"
             android:progress="1" />
 
-        <androidx.cardview.widget.CardView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvIngredients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/space_16"
             android:layout_marginTop="@dimen/space_16"
-            app:cardCornerRadius="@dimen/space_8"
-            app:cardElevation="@dimen/space_0">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvIngredients"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="4"
-                tools:listitem="@layout/item_ingredients" />
-        </androidx.cardview.widget.CardView>
+            android:background="@drawable/rv_rounded_background"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_ingredients" />
 
         <TextView
             android:id="@+id/tvCookingMethod"
@@ -132,24 +125,18 @@
             android:gravity="start"
             android:text="@string/cooking_method" />
 
-        <androidx.cardview.widget.CardView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMethod"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/space_16"
             android:layout_marginTop="@dimen/space_16"
-            app:cardCornerRadius="@dimen/space_8"
-            app:cardElevation="@dimen/space_0">
+            android:background="@drawable/rv_rounded_background"
+            android:paddingVertical="@dimen/space_4"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="5"
+            tools:listitem="@layout/item_cooking_method" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvMethod"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:paddingVertical="@dimen/space_4"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="5"
-                tools:listitem="@layout/item_cooking_method" />
-        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
 
