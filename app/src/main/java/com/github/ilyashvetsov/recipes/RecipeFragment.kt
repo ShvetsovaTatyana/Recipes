@@ -78,6 +78,7 @@ class RecipeFragment : Fragment() {
                 R.color.list_separator
             )
         )
+        divider.isLastItemDecorated = false
         divider.dividerThickness = resources.getDimensionPixelSize(R.dimen.space_1)
         divider.dividerInsetStart = resources.getDimensionPixelOffset(R.dimen.space_12)
         divider.dividerInsetEnd = resources.getDimensionPixelOffset(R.dimen.space_12)
