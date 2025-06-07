@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.core.content.ContextCompat
-import androidx.core.content.edit
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.github.ilyashvetsov.recipes.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
@@ -29,7 +28,6 @@ class RecipeFragment : Fragment() {
                 it.getParcelable(ARG_RECIPE)
             }
         }
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -80,6 +78,7 @@ class RecipeFragment : Fragment() {
                 R.color.list_separator
             )
         )
+        divider.isLastItemDecorated = false
         divider.dividerThickness = resources.getDimensionPixelSize(R.dimen.space_1)
         divider.dividerInsetStart = resources.getDimensionPixelOffset(R.dimen.space_12)
         divider.dividerInsetEnd = resources.getDimensionPixelOffset(R.dimen.space_12)
