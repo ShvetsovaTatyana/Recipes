@@ -5,13 +5,9 @@
     <string name="title">Заголовок</string>
     <string name="description">Описание</string>
     <string name="category_image">Изображение категории %s</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ingredients">Ингредиенты</string>
     <string name="cooking_method">Способ приготовления</string>
     <string name="portions">Порции:</string>
     <string name="progress">1</string>
     <string name="text_placeholder">Вы еще не добавили ни одного рецепта в избранное</string>
-
-
 </resources>
