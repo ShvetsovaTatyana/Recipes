@@ -12,10 +12,11 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/space_12"
         android:layout_marginStart="@dimen/space_12"
+        android:textAllCaps="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="ТВОРОГ" />
+        tools:text="творог" />
 
     <TextView
         android:id="@+id/tvAmountOfIngredient"
@@ -24,8 +25,9 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/space_12"
         android:layout_marginEnd="@dimen/space_12"
+        android:textAllCaps="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="350 Г" />
+        tools:text="350 г" />
 </androidx.constraintlayout.widget.ConstraintLayout>

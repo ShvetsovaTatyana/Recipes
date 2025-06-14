@@ -23,7 +23,6 @@ class RecipesListFragment : Fragment() {
     ): View {
         _binding = FragmentRecipesListBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
