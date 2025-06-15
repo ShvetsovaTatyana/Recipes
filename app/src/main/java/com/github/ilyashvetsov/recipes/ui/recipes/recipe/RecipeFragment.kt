@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.recipes
+package com.github.ilyashvetsov.recipes.ui.recipes.recipe
 
 import android.content.Context.MODE_PRIVATE
 import android.os.Build
@@ -10,7 +10,13 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.databinding.FragmentRecipeBinding
+import com.github.ilyashvetsov.recipes.model.Recipe
+import com.github.ilyashvetsov.recipes.ui.ARG_RECIPE
+import com.github.ilyashvetsov.recipes.ui.FAVORITES_RECIPE_KEY
+import com.github.ilyashvetsov.recipes.ui.SHARED_PREFS_SET_FAVORITES_RECIPE
+import com.github.ilyashvetsov.recipes.ui.loadImageFromAssets
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
 class RecipeFragment : Fragment() {

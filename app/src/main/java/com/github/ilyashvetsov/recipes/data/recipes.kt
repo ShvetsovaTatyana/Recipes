@@ -1,4 +1,8 @@
-package com.github.ilyashvetsov.recipes
+package com.github.ilyashvetsov.recipes.data
+
+import com.github.ilyashvetsov.recipes.model.Category
+import com.github.ilyashvetsov.recipes.model.Ingredient
+import com.github.ilyashvetsov.recipes.model.Recipe
 
 object STUB {
     private val categories: List<Category> =

@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.recipes
+package com.github.ilyashvetsov.recipes.ui
 
 import android.graphics.BitmapFactory
 import android.util.Log
