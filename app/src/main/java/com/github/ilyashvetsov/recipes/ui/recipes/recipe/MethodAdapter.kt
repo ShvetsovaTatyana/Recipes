@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.recipes
+package com.github.ilyashvetsov.recipes.ui.recipes.recipe
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

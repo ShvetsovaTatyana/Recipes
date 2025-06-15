@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.recipes
+package com.github.ilyashvetsov.recipes.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,7 +8,10 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import com.github.ilyashvetsov.recipes.R
+import com.github.ilyashvetsov.recipes.data.STUB
 import com.github.ilyashvetsov.recipes.databinding.FragmentRecipesListBinding
+import com.github.ilyashvetsov.recipes.ui.recipes.recipe.RecipeFragment
 
 class RecipesListFragment : Fragment() {
     private var _binding: FragmentRecipesListBinding? = null

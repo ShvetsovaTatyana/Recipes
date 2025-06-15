@@ -10,4 +10,6 @@
     <string name="portions">Порции:</string>
     <string name="progress">1</string>
     <string name="text_placeholder">Вы еще не добавили ни одного рецепта в избранное</string>
+    <string name="burgers">Бургеры</string>
+    <string name="burger_with_mushrooms_and_cheese">Бургер с грибами и сыром</string>
 </resources>

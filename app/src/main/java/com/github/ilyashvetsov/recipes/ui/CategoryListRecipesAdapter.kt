@@ -1,8 +1,10 @@
-package com.github.ilyashvetsov.recipes
+package com.github.ilyashvetsov.recipes.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.github.ilyashvetsov.recipes.R
+import com.github.ilyashvetsov.recipes.model.Recipe
 import com.github.ilyashvetsov.recipes.databinding.ItemCategoryRecipesBinding
 
 class CategoryListRecipesAdapter(

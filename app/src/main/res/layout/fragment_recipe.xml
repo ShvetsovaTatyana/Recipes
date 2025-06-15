@@ -20,6 +20,7 @@
                 android:id="@+id/ivRecipe"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:contentDescription="@string/burger_with_mushrooms_and_cheese"
                 android:scaleType="centerCrop"
                 tools:src="@color/material_dynamic_neutral0" />
 

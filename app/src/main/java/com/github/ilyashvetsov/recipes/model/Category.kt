@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.recipes
+package com.github.ilyashvetsov.recipes.model
 
 data class Category(
     val id: Int,
