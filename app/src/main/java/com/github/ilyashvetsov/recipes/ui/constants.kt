@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.recipes
+package com.github.ilyashvetsov.recipes.ui
 
 const val ARG_CATEGORY_ID = "ARG_CATEGORY_ID"
 const val ARG_CATEGORY_NAME = "ARG_CATEGORY_NAME"

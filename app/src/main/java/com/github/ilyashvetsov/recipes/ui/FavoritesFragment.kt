@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.recipes
+package com.github.ilyashvetsov.recipes.ui
 
 import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
@@ -9,7 +9,10 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import com.github.ilyashvetsov.recipes.R
+import com.github.ilyashvetsov.recipes.data.STUB
 import com.github.ilyashvetsov.recipes.databinding.FragmentFavoritesBinding
+import com.github.ilyashvetsov.recipes.ui.recipes.recipe.RecipeFragment
 
 class FavoritesFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? = null
