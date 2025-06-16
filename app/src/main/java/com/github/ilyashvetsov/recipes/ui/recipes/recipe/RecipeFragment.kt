@@ -44,7 +44,7 @@ class RecipeFragment : Fragment() {
         initRecycler()
         initUI()
         viewModel.screenState.observe(viewLifecycleOwner) {
-            Log.i("!!!")
+            Log.i("!!!", it.isFavorite.toString())
         }
     }
 
