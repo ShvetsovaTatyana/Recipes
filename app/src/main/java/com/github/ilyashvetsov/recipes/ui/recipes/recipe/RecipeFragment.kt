@@ -3,12 +3,14 @@ package com.github.ilyashvetsov.recipes.ui.recipes.recipe
 import android.content.Context.MODE_PRIVATE
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.databinding.FragmentRecipeBinding
@@ -24,6 +26,7 @@ class RecipeFragment : Fragment() {
     private val binding
         get() = _binding ?: throw IllegalStateException("Binding is not initialized")
     private var recipe: Recipe? = null
+    private val viewModel by viewModels<RecipeViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +43,9 @@ class RecipeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecycler()
         initUI()
+        viewModel.screenState.observe(viewLifecycleOwner) {
+            Log.i("!!!", it.isFavorite.toString())
+        }
     }
 
     private fun initUI() {
