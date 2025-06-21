@@ -1,9 +1,6 @@
 package com.github.ilyashvetsov.recipes.ui.recipes.recipe
 
-import android.content.Context.MODE_PRIVATE
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,8 +13,6 @@ import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.databinding.FragmentRecipeBinding
 import com.github.ilyashvetsov.recipes.model.Recipe
 import com.github.ilyashvetsov.recipes.ui.ARG_RECIPE
-import com.github.ilyashvetsov.recipes.ui.FAVORITES_RECIPE_KEY
-import com.github.ilyashvetsov.recipes.ui.SHARED_PREFS_SET_FAVORITES_RECIPE
 import com.github.ilyashvetsov.recipes.ui.loadImageFromAssets
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
@@ -28,24 +23,13 @@ class RecipeFragment : Fragment() {
     private var recipe: Recipe? = null
     private val viewModel by viewModels<RecipeViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                it.getParcelable(ARG_RECIPE, Recipe::class.java)
-            } else {
-                it.getParcelable(ARG_RECIPE)
-            }
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecycler()
         initUI()
-        viewModel.screenState.observe(viewLifecycleOwner) {
-            Log.i("!!!", it.isFavorite.toString())
-        }
+        val recipeId = arguments?.getInt(ARG_RECIPE)
+        recipeId?.let { viewModel.loadRecipe(it) }
     }
 
     private fun initUI() {
@@ -60,18 +44,16 @@ class RecipeFragment : Fragment() {
         binding.ivRecipe.contentDescription = contentDescription
         binding.ibFavorites.setImageResource(R.drawable.ic_heart_empty)
         binding.ibFavorites.setOnClickListener {
-            colorTheHeart()
-            changeFavorites()
+            viewModel.onFavoritesClicked()
         }
-        if (getFavorites().contains(recipe?.id.toString()))
+        if (viewModel.getFavorites().contains(recipe?.id.toString()))
             binding.ibFavorites.setImageResource(R.drawable.ic_heart)
-    }
-
-    private fun colorTheHeart() {
-        if (!getFavorites().contains(recipe?.id.toString())) {
-            binding.ibFavorites.setImageResource(R.drawable.ic_heart)
-        } else
-            binding.ibFavorites.setImageResource(R.drawable.ic_heart_empty)
+        viewModel.screenState.observe(viewLifecycleOwner) {
+            if (it.isFavorite)
+                binding.ibFavorites.setImageResource(R.drawable.ic_heart)
+            else
+                binding.ibFavorites.setImageResource(R.drawable.ic_heart_empty)
+        }
     }
 
     private fun initRecycler() {
@@ -110,33 +92,6 @@ class RecipeFragment : Fragment() {
         })
     }
 
-    private fun saveFavorites(dataSetString: Set<String>) {
-        val sharedPrefs =
-            requireActivity().getSharedPreferences(SHARED_PREFS_SET_FAVORITES_RECIPE, MODE_PRIVATE)
-        sharedPrefs
-            .edit()
-            .putStringSet(FAVORITES_RECIPE_KEY, dataSetString)
-            .apply()
-    }
-
-    private fun getFavorites(): MutableSet<String> {
-        val sharedPrefs =
-            requireActivity().getSharedPreferences(SHARED_PREFS_SET_FAVORITES_RECIPE, MODE_PRIVATE)
-        val dataSetString = sharedPrefs.getStringSet(FAVORITES_RECIPE_KEY, mutableSetOf())
-        val newDataSetString = HashSet(dataSetString ?: mutableSetOf())
-        return newDataSetString
-    }
-
-    private fun changeFavorites() {
-        val favoritesRecipe = getFavorites()
-        if (getFavorites().contains(recipe?.id.toString())) {
-            favoritesRecipe.remove(recipe?.id.toString())
-            saveFavorites(favoritesRecipe)
-        } else {
-            favoritesRecipe.add(recipe?.id.toString())
-            saveFavorites(favoritesRecipe)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
