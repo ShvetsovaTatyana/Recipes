@@ -63,7 +63,7 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(id: Int) {
-        val bundle = bundleOf(ARG_RECIPE to id)
+        val bundle = bundleOf(ARG_RECIPE_ID to id)
         parentFragmentManager.commit {
             replace<RecipeFragment>(
                 R.id.mainContainer,
