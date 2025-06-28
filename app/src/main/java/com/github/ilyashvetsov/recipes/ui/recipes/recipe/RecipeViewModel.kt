@@ -30,7 +30,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         //TODO("load from network")
         val recipe = STUB.getRecipeById(id)
         if (recipe != null) {
-            _screenState.value = _screenState.value?.copy(
+            _screenState.value = screenState.value?.copy(
                 recipe = recipe,
                 isFavorite = getFavorites().contains(id.toString()),
             )
@@ -41,8 +41,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
                 getApplication<Application>().assets.open(it.imageUrl).use { inputStream ->
                     val drawable = Drawable.createFromStream(inputStream, null)
                     drawable?.let {
-                        val currentState = _screenState.value ?: RecipeScreenState()
-                        _screenState.value = currentState.copy(recipeImage = it)
+                        _screenState.value = screenState.value?.copy(recipeImage = it)
                     }
                     drawable
                 }
