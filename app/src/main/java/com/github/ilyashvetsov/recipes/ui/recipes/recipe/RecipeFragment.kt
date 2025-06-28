@@ -24,7 +24,6 @@ class RecipeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecycler()
         initUI()
         val recipeId = arguments?.getInt(ARG_RECIPE_ID)
         recipeId?.let { viewModel.loadRecipe(it) }
@@ -46,15 +45,26 @@ class RecipeFragment : Fragment() {
             else
                 binding.ibFavorites.setImageResource(R.drawable.ic_heart_empty)
             binding.ivRecipe.setImageDrawable(it.recipeImage)
+            val adapter =
+                it.recipe?.ingredients?.let { IngredientsAdapter(dataSetIngredient = it) }
+            binding.rvIngredients.adapter = adapter
+            val adapterMethod = it.recipe?.method?.let { MethodAdapter(dataSetCookingMethod = it) }
+            binding.rvMethod.adapter = adapterMethod
+            adapter?.updateIngredients(it.portionsCount)
+            binding.tvProgress.text = "${it.portionsCount}"
         }
-    }
+        binding.seekBar.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, p2: Boolean) {
+                viewModel.calculationNumberServings(progress)
+            }
 
-    private fun initRecycler() {
-        val adapter =
-            recipe?.ingredients?.let { IngredientsAdapter(dataSetIngredient = it) }
-        binding.rvIngredients.adapter = adapter
-        val adapterMethod = recipe?.method?.let { MethodAdapter(dataSetCookingMethod = it) }
-        binding.rvMethod.adapter = adapterMethod
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+            }
+        })
         val divider = MaterialDividerItemDecoration(
             requireContext(),
             DividerItemDecoration.VERTICAL
@@ -71,20 +81,7 @@ class RecipeFragment : Fragment() {
         divider.dividerInsetEnd = resources.getDimensionPixelOffset(R.dimen.space_12)
         binding.rvIngredients.addItemDecoration(divider)
         binding.rvMethod.addItemDecoration(divider)
-        binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, p2: Boolean) {
-                adapter?.updateIngredients(progress)
-                binding.tvProgress.text = "$progress"
-            }
-
-            override fun onStartTrackingTouch(p0: SeekBar?) {
-            }
-
-            override fun onStopTrackingTouch(p0: SeekBar?) {
-            }
-        })
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
