@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.databinding.FragmentRecipeBinding
 import com.github.ilyashvetsov.recipes.model.Recipe
-import com.github.ilyashvetsov.recipes.ui.ARG_RECIPE
-import com.github.ilyashvetsov.recipes.ui.loadImageFromAssets
+import com.github.ilyashvetsov.recipes.ui.ARG_RECIPE_ID
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
 class RecipeFragment : Fragment() {
@@ -23,23 +22,16 @@ class RecipeFragment : Fragment() {
     private var recipe: Recipe? = null
     private val viewModel by viewModels<RecipeViewModel>()
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecycler()
         initUI()
-        val recipeId = arguments?.getInt(ARG_RECIPE)
+        val recipeId = arguments?.getInt(ARG_RECIPE_ID)
         recipeId?.let { viewModel.loadRecipe(it) }
     }
 
     private fun initUI() {
         binding.tvRecipe.text = recipe?.title
-        recipe?.imageUrl?.let {
-            loadImageFromAssets(
-                fileName = it,
-                imageView = binding.ivRecipe
-            )
-        }
         val contentDescription = "Изображение рецепта \"${recipe?.title}\""
         binding.ivRecipe.contentDescription = contentDescription
         binding.ibFavorites.setImageResource(R.drawable.ic_heart_empty)
@@ -53,6 +45,7 @@ class RecipeFragment : Fragment() {
                 binding.ibFavorites.setImageResource(R.drawable.ic_heart)
             else
                 binding.ibFavorites.setImageResource(R.drawable.ic_heart_empty)
+            binding.ivRecipe.setImageDrawable(it.recipeImage)
         }
     }
 
