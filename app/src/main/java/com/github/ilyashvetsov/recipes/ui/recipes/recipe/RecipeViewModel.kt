@@ -22,7 +22,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
     data class RecipeScreenState(
         val recipe: Recipe? = null,
         val isFavorite: Boolean = false,
-        val portionsCount: Int = 1,
+        var portionsCount: Int = 1,
         val recipeImage: Drawable? = null
     )
 
@@ -73,9 +73,9 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
             saveFavorites(favoritesRecipe)
         }
         if (_screenState.value?.isFavorite == true)
-            _screenState.value = _screenState.value?.copy(isFavorite = false)
+            _screenState.value = screenState.value?.copy(isFavorite = false)
         else
-            _screenState.value = _screenState.value?.copy(isFavorite = true)
+            _screenState.value = screenState.value?.copy(isFavorite = true)
     }
 
     private fun saveFavorites(dataSetString: Set<String>) {
@@ -88,6 +88,10 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
             .edit()
             .putStringSet(FAVORITES_RECIPE_KEY, dataSetString)
             .apply()
+    }
+
+    fun calculationNumberServings(portionsCount: Int) {
+        _screenState.value = screenState.value?.copy(portionsCount = portionsCount)
     }
 }
 
