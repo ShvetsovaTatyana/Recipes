@@ -6,12 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.databinding.FragmentRecipeBinding
-import com.github.ilyashvetsov.recipes.model.Recipe
 import com.github.ilyashvetsov.recipes.ui.ARG_RECIPE_ID
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
@@ -19,7 +19,6 @@ class RecipeFragment : Fragment() {
     private var _binding: FragmentRecipeBinding? = null
     private val binding
         get() = _binding ?: throw IllegalStateException("Binding is not initialized")
-    private var recipe: Recipe? = null
     private val viewModel by viewModels<RecipeViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -30,41 +29,33 @@ class RecipeFragment : Fragment() {
     }
 
     private fun initUI() {
-        binding.tvRecipe.text = recipe?.title
-        val contentDescription = "Изображение рецепта \"${recipe?.title}\""
-        binding.ivRecipe.contentDescription = contentDescription
         binding.ibFavorites.setImageResource(R.drawable.ic_heart_empty)
+        val adapter = IngredientsAdapter(listOf())
+        binding.rvIngredients.adapter = adapter
+        val adapterMethod = MethodAdapter(listOf())
+        binding.rvMethod.adapter = adapterMethod
         binding.ibFavorites.setOnClickListener {
             viewModel.onFavoritesClicked()
         }
-        if (viewModel.getFavorites().contains(recipe?.id.toString()))
-            binding.ibFavorites.setImageResource(R.drawable.ic_heart)
         viewModel.screenState.observe(viewLifecycleOwner) {
             if (it.isFavorite)
                 binding.ibFavorites.setImageResource(R.drawable.ic_heart)
             else
                 binding.ibFavorites.setImageResource(R.drawable.ic_heart_empty)
             binding.ivRecipe.setImageDrawable(it.recipeImage)
-            val adapter =
-                it.recipe?.ingredients?.let { IngredientsAdapter(dataSetIngredient = it) }
-            binding.rvIngredients.adapter = adapter
-            val adapterMethod = it.recipe?.method?.let { MethodAdapter(dataSetCookingMethod = it) }
-            binding.rvMethod.adapter = adapterMethod
-            adapter?.updateIngredients(it.portionsCount)
+            adapter.updateIngredients(it.portionsCount)
             binding.tvProgress.text = "${it.portionsCount}"
+            binding.tvRecipe.text = it.recipe?.title
+            val contentDescription = "Изображение рецепта \"${it.recipe?.title}\""
+            binding.ivRecipe.contentDescription = contentDescription
+            if (it.recipe?.ingredients != null)
+                adapter.dataSetIngredient = it.recipe.ingredients
+            if (it.recipe?.method != null)
+                adapterMethod.dataSetCookingMethod = it.recipe.method
         }
-        binding.seekBar.setOnSeekBarChangeListener(object :
-            SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, p2: Boolean) {
-                viewModel.calculationNumberServings(progress)
-            }
-
-            override fun onStartTrackingTouch(p0: SeekBar?) {
-            }
-
-            override fun onStopTrackingTouch(p0: SeekBar?) {
-            }
-        })
+        binding.seekBar.setOnSeekBarChangeListener(
+            PortionSeekBarListener(onChangeIngredients = viewModel::calculationNumberServings)
+        )
         val divider = MaterialDividerItemDecoration(
             requireContext(),
             DividerItemDecoration.VERTICAL
@@ -89,5 +80,17 @@ class RecipeFragment : Fragment() {
     ): View {
         _binding = FragmentRecipeBinding.inflate(inflater, container, false)
         return binding.root
+    }
+}
+
+class PortionSeekBarListener(val onChangeIngredients: (Int) -> Unit) : OnSeekBarChangeListener {
+    override fun onProgressChanged(p0: SeekBar?, progress: Int, p2: Boolean) {
+        onChangeIngredients(progress)
+    }
+
+    override fun onStartTrackingTouch(p0: SeekBar?) {
+    }
+
+    override fun onStopTrackingTouch(p0: SeekBar?) {
     }
 }
