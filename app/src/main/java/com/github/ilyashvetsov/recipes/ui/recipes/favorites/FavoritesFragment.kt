@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.recipes.ui
+package com.github.ilyashvetsov.recipes.ui.recipes.favorites
 
 import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
@@ -12,6 +12,10 @@ import androidx.fragment.app.replace
 import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.data.STUB
 import com.github.ilyashvetsov.recipes.databinding.FragmentFavoritesBinding
+import com.github.ilyashvetsov.recipes.ui.ARG_RECIPE_ID
+import com.github.ilyashvetsov.recipes.ui.recipes.list_of_recipes.RecipesListAdapter
+import com.github.ilyashvetsov.recipes.ui.FAVORITES_RECIPE_KEY
+import com.github.ilyashvetsov.recipes.ui.SHARED_PREFS_SET_FAVORITES_RECIPE
 import com.github.ilyashvetsov.recipes.ui.recipes.recipe.RecipeFragment
 
 class FavoritesFragment : Fragment() {
@@ -41,7 +45,7 @@ class FavoritesFragment : Fragment() {
             binding.rvFavorites.visibility = View.VISIBLE
             binding.tvPlaceholder.visibility = View.GONE
         }
-        val adapter = CategoryListRecipesAdapter(
+        val adapter = RecipesListAdapter(
             STUB.getRecipesByIds(dataSetRecipe.map { it.toInt() }.toSet()),
             onItemClick = { openRecipeByRecipeId(id = it) }
         )

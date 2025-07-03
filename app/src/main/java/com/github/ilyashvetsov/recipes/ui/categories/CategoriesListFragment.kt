@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.recipes.ui
+package com.github.ilyashvetsov.recipes.ui.categories
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,6 +11,10 @@ import androidx.fragment.app.replace
 import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.data.STUB
 import com.github.ilyashvetsov.recipes.databinding.FragmentListCategoriesBinding
+import com.github.ilyashvetsov.recipes.ui.ARG_CATEGORY_ID
+import com.github.ilyashvetsov.recipes.ui.ARG_CATEGORY_IMAGE_URL
+import com.github.ilyashvetsov.recipes.ui.ARG_CATEGORY_NAME
+import com.github.ilyashvetsov.recipes.ui.recipes.list_of_recipes.RecipesListFragment
 
 class CategoriesListFragment : Fragment() {
     private var _binding: FragmentListCategoriesBinding? = null

@@ -52,7 +52,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun getFavorites(): MutableSet<String> {
+    private fun getFavorites(): MutableSet<String> {
         val sharedPrefs =
             getApplication<Application>().getSharedPreferences(
                 SHARED_PREFS_SET_FAVORITES_RECIPE,

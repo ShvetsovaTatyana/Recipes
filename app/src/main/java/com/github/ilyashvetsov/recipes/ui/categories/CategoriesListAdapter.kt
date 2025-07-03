@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.recipes.ui
+package com.github.ilyashvetsov.recipes.ui.categories
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.ilyashvetsov.recipes.model.Category
 import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.databinding.ItemCategoryBinding
+import com.github.ilyashvetsov.recipes.ui.loadImageFromAssets
 
 
 class CategoriesListAdapter(

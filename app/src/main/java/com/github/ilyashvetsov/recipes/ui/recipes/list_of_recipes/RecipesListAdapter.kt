@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.recipes.ui
+package com.github.ilyashvetsov.recipes.ui.recipes.list_of_recipes
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,11 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.model.Recipe
 import com.github.ilyashvetsov.recipes.databinding.ItemCategoryRecipesBinding
+import com.github.ilyashvetsov.recipes.ui.loadImageFromAssets
 
-class CategoryListRecipesAdapter(
-    private val dataSetRecipe: List<Recipe>,
+class RecipesListAdapter(
+    var dataSetRecipe: List<Recipe>,
     private val onItemClick: (Int) -> Unit
-) : RecyclerView.Adapter<CategoryListRecipesAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<RecipesListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
