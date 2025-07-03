@@ -9,7 +9,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 
 class IngredientsAdapter(
-    private val dataSetIngredient: List<Ingredient>,
+    var dataSetIngredient: List<Ingredient>,
     private var quantity: Int = 1
 ) :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
