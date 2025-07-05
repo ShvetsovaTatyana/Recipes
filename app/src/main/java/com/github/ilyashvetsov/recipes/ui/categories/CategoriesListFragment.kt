@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.fragment.app.viewModels
 import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.data.STUB
 import com.github.ilyashvetsov.recipes.databinding.FragmentListCategoriesBinding
@@ -20,6 +21,7 @@ class CategoriesListFragment : Fragment() {
     private var _binding: FragmentListCategoriesBinding? = null
     private val binding
         get() = _binding ?: throw IllegalStateException("Binding is not initialized")
+    private val viewModel by viewModels<CategoriesListViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,24 +33,26 @@ class CategoriesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecycler()
+        initUI()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-
-    private fun initRecycler() {
-        val dataSet = STUB.getCategories()
-        val adapter = CategoriesListAdapter(dataSet)
+    private fun initUI() {
+        val adapter = CategoriesListAdapter(listOf())
         adapter.setOnItemClickListener(object : CategoriesListAdapter.OnItemClickListener {
             override fun onItemClick(categoryId: Int) {
                 openRecipesByCategoryId(categoryId)
             }
         })
         binding.rvCategories.adapter = adapter
+        viewModel.screenState.observe(viewLifecycleOwner) {
+            val dataSetCategories = viewModel.getCategories()
+            adapter.dataSet = dataSetCategories
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun openRecipesByCategoryId(categoryId: Int) {

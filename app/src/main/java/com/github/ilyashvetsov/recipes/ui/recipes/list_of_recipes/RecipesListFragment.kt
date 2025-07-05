@@ -36,16 +36,15 @@ class RecipesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initUI()
+        initBundleData()
         val categoryId = arguments?.getInt(ARG_CATEGORY_ID)
         categoryId?.let {
             viewModel.loadCategory(
                 categoryId = it,
-                categoryName = categoryName ?: "",
                 categoryImageUrl = categoryImageUrl ?: ""
             )
         }
-        initBundleData()
+        initUI()
     }
 
     private fun initUI() {
@@ -54,10 +53,10 @@ class RecipesListFragment : Fragment() {
             onItemClick = { openRecipeByRecipeId(id = it) }
         )
         binding.rvCategories.adapter = adapter
-        viewModel.screenState.observe(viewLifecycleOwner) {
-            binding.ivRecipeCategory.setImageDrawable(it.categoryImage)
+        viewModel.screenState.observe(viewLifecycleOwner) {state->
+            binding.ivRecipeCategory.setImageDrawable(state.categoryImage)
             binding.tvRecipeCategory.text = categoryName
-            adapter.dataSetRecipe = it.recipeList
+            adapter.dataSetRecipe = state.recipeList
 
         }
     }

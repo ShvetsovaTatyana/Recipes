@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.github.ilyashvetsov.recipes.data.STUB
 import com.github.ilyashvetsov.recipes.model.Recipe
 import java.io.IOException
 
@@ -16,7 +17,6 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
 
     data class RecipeListScreenState(
         val categoryId: Int = 0,
-        val categoryName: String = "",
         val categoryImageUrl: String = "",
         val categoryImage: Drawable? = null,
         val recipeList: List<Recipe> = listOf()
@@ -24,9 +24,11 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
 
     fun loadCategory(
         categoryId: Int,
-        categoryName: String,
         categoryImageUrl: String
     ): Drawable? {
+        val listRecipes = STUB.getRecipesByCategoryId(categoryId)
+        _screenState.value =
+            screenState.value?.copy(recipeList = listRecipes)
         //TODO("load from network")
         return try {
             categoryImageUrl.let {

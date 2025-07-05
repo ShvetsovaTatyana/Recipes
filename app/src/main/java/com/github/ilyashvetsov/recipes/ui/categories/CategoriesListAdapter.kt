@@ -10,7 +10,7 @@ import com.github.ilyashvetsov.recipes.ui.loadImageFromAssets
 
 
 class CategoriesListAdapter(
-    private val dataSet: List<Category>,
+    var dataSet: List<Category>,
 ) :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
     interface OnItemClickListener {
