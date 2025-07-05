@@ -9,6 +9,8 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.databinding.ActivityMainBinding
+import com.github.ilyashvetsov.recipes.ui.categories.CategoriesListFragment
+import com.github.ilyashvetsov.recipes.ui.recipes.favorites.FavoritesFragment
 
 class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
