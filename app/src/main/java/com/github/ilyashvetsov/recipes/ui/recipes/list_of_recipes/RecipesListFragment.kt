@@ -6,16 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.databinding.FragmentRecipesListBinding
 import com.github.ilyashvetsov.recipes.ui.ARG_CATEGORY_ID
 import com.github.ilyashvetsov.recipes.ui.ARG_CATEGORY_IMAGE_URL
 import com.github.ilyashvetsov.recipes.ui.ARG_CATEGORY_NAME
 import com.github.ilyashvetsov.recipes.ui.ARG_RECIPE_ID
-import com.github.ilyashvetsov.recipes.ui.recipes.recipe.RecipeFragment
 
 class RecipesListFragment : Fragment() {
     private var _binding: FragmentRecipesListBinding? = null
@@ -53,7 +51,7 @@ class RecipesListFragment : Fragment() {
             onItemClick = { openRecipeByRecipeId(id = it) }
         )
         binding.rvCategories.adapter = adapter
-        viewModel.screenState.observe(viewLifecycleOwner) {state->
+        viewModel.screenState.observe(viewLifecycleOwner) { state ->
             binding.ivRecipeCategory.setImageDrawable(state.categoryImage)
             binding.tvRecipeCategory.text = categoryName
             adapter.dataSetRecipe = state.recipeList
@@ -69,13 +67,6 @@ class RecipesListFragment : Fragment() {
 
     private fun openRecipeByRecipeId(id: Int) {
         val bundle = bundleOf(ARG_RECIPE_ID to id)
-        parentFragmentManager.commit {
-            replace<RecipeFragment>(
-                R.id.mainContainer,
-                args = bundle
-            )
-            setReorderingAllowed(true)
-            addToBackStack(null)
-        }
+        findNavController().navigate(R.id.action_recipesListFragment_to_recipeFragment, bundle)
     }
 }
