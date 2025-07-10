@@ -9,7 +9,7 @@
         android:id="@+id/favoritesFragment"
         android:name="com.github.ilyashvetsov.recipes.ui.recipes.favorites.FavoritesFragment"
         android:label="FavoritesFragment"
-        tools:layout= "@layout/fragment_favorites">
+        tools:layout="@layout/fragment_favorites">
         <action
             android:id="@+id/action_favoritesFragment_to_recipeFragment"
             app:destination="@id/recipeFragment" />
@@ -18,7 +18,7 @@
         android:id="@+id/recipeFragment"
         android:name="com.github.ilyashvetsov.recipes.ui.recipes.recipe.RecipeFragment"
         android:label="RecipeFragment"
-        tools:layout="@layout/fragment_recipe"/>
+        tools:layout="@layout/fragment_recipe" />
     <fragment
         android:id="@+id/recipesListFragment"
         android:name="com.github.ilyashvetsov.recipes.ui.recipes.list_of_recipes.RecipesListFragment"
@@ -31,8 +31,8 @@
     <fragment
         android:id="@+id/categoriesListFragment"
         android:name="com.github.ilyashvetsov.recipes.ui.categories.CategoriesListFragment"
-        android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites" >
+        android:label="CategoriesListFragment"
+        tools:layout="@layout/fragment_list_categories">
         <action
             android:id="@+id/action_categoriesListFragment_to_recipesListFragment"
             app:destination="@id/recipesListFragment" />
