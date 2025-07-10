@@ -9,10 +9,10 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.databinding.FragmentRecipeBinding
-import com.github.ilyashvetsov.recipes.ui.ARG_RECIPE_ID
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
 class RecipeFragment : Fragment() {
@@ -20,12 +20,13 @@ class RecipeFragment : Fragment() {
     private val binding
         get() = _binding ?: throw IllegalStateException("Binding is not initialized")
     private val viewModel by viewModels<RecipeViewModel>()
+    private val recipeFragmentArgs: RecipeFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
-        val recipeId = arguments?.getInt(ARG_RECIPE_ID)
-        recipeId?.let { viewModel.loadRecipe(it) }
+        val recipeId = recipeFragmentArgs.recipeId
+        viewModel.loadRecipe(recipeId)
     }
 
     private fun initUI() {
