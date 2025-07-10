@@ -6,16 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.data.STUB
 import com.github.ilyashvetsov.recipes.databinding.FragmentListCategoriesBinding
 import com.github.ilyashvetsov.recipes.ui.ARG_CATEGORY_ID
 import com.github.ilyashvetsov.recipes.ui.ARG_CATEGORY_IMAGE_URL
 import com.github.ilyashvetsov.recipes.ui.ARG_CATEGORY_NAME
-import com.github.ilyashvetsov.recipes.ui.recipes.list_of_recipes.RecipesListFragment
 
 class CategoriesListFragment : Fragment() {
     private var _binding: FragmentListCategoriesBinding? = null
@@ -65,14 +63,9 @@ class CategoriesListFragment : Fragment() {
             ARG_CATEGORY_NAME to categoryName,
             ARG_CATEGORY_IMAGE_URL to categoryImageUrl,
         )
-        parentFragmentManager.commit {
-            replace<RecipesListFragment>(
-                R.id.mainContainer,
-                args = bundle
-            )
-            setReorderingAllowed(true)
-            addToBackStack(null)
-        }
-
+        findNavController().navigate(
+            R.id.action_categoriesListFragment_to_recipesListFragment,
+            bundle
+        )
     }
 }
