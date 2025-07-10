@@ -18,7 +18,11 @@
         android:id="@+id/recipeFragment"
         android:name="com.github.ilyashvetsov.recipes.ui.recipes.recipe.RecipeFragment"
         android:label="RecipeFragment"
-        tools:layout="@layout/fragment_recipe" />
+        tools:layout="@layout/fragment_recipe" >
+        <argument
+            android:name="recipeId"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/recipesListFragment"
         android:name="com.github.ilyashvetsov.recipes.ui.recipes.list_of_recipes.RecipesListFragment"
