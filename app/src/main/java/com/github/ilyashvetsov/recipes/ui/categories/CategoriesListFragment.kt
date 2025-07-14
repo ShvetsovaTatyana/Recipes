@@ -5,15 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.data.STUB
 import com.github.ilyashvetsov.recipes.databinding.FragmentListCategoriesBinding
-import com.github.ilyashvetsov.recipes.ui.ARG_CATEGORY_ID
-import com.github.ilyashvetsov.recipes.ui.ARG_CATEGORY_IMAGE_URL
-import com.github.ilyashvetsov.recipes.ui.ARG_CATEGORY_NAME
+import com.github.ilyashvetsov.recipes.model.Category
 
 class CategoriesListFragment : Fragment() {
     private var _binding: FragmentListCategoriesBinding? = null
@@ -54,18 +50,18 @@ class CategoriesListFragment : Fragment() {
     }
 
     private fun openRecipesByCategoryId(categoryId: Int) {
-        val categoryName =
-            STUB.getCategories().filter { category -> category.id == categoryId }[0].title
-        val categoryImageUrl =
-            STUB.getCategories().filter { category -> category.id == categoryId }[0].imageUrl
-        val bundle = bundleOf(
-            ARG_CATEGORY_ID to categoryId,
-            ARG_CATEGORY_NAME to categoryName,
-            ARG_CATEGORY_IMAGE_URL to categoryImageUrl,
-        )
+        val category = STUB.getCategories().find { category -> category.id == categoryId }
+        if (category != null)
+            openRecipesByCategory(category)
+        else
+            throw IllegalStateException()
+    }
+
+    private fun openRecipesByCategory(category: Category) {
         findNavController().navigate(
-            R.id.action_categoriesListFragment_to_recipesListFragment,
-            bundle
+            CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(
+                category = category
+            )
         )
     }
 }
