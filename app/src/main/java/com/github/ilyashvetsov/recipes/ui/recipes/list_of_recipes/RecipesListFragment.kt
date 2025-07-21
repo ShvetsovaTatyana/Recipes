@@ -17,7 +17,7 @@ class RecipesListFragment : Fragment() {
         get() = _binding ?: throw IllegalStateException("Binding is not initialized")
     private var category: Category? = null
     private val viewModel by viewModels<RecipeListViewModel>()
-    private val recipesListFragment: RecipesListFragmentArgs by navArgs()
+    private val argsRecipesListFragment: RecipesListFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,7 +29,7 @@ class RecipesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        category = recipesListFragment.category
+        category = argsRecipesListFragment.category
         category?.id?.let {
             viewModel.loadCategory(
                 categoryId = it,
