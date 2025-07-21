@@ -5,17 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.data.STUB
 import com.github.ilyashvetsov.recipes.databinding.FragmentFavoritesBinding
-import com.github.ilyashvetsov.recipes.ui.ARG_RECIPE_ID
 import com.github.ilyashvetsov.recipes.ui.recipes.list_of_recipes.RecipesListAdapter
-import com.github.ilyashvetsov.recipes.ui.recipes.recipe.RecipeFragment
 
 class FavoritesFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? = null
@@ -53,8 +47,11 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(id: Int) {
-        val bundle = bundleOf(ARG_RECIPE_ID to id)
-        findNavController().navigate(R.id.action_favoritesFragment_to_recipeFragment, bundle)
+        findNavController().navigate(
+            FavoritesFragmentDirections.actionFavoritesFragmentToRecipeFragment(
+                id
+            )
+        )
     }
 
     override fun onDestroyView() {
