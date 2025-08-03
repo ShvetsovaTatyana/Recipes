@@ -49,7 +49,7 @@ class RecipesListFragment : Fragment() {
             binding.ivRecipeCategory.setImageDrawable(state.categoryImage)
             binding.tvRecipeCategory.text = category?.title
             adapter.dataSetRecipe = state.recipeList
-
+            adapter.notifyDataSetChanged()
         }
     }
 

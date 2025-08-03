@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.github.ilyashvetsov.recipes.data.STUB
 import com.github.ilyashvetsov.recipes.databinding.FragmentListCategoriesBinding
 import com.github.ilyashvetsov.recipes.model.Category
 
@@ -38,9 +37,10 @@ class CategoriesListFragment : Fragment() {
             }
         })
         binding.rvCategories.adapter = adapter
+        viewModel.getCategories()
         viewModel.screenState.observe(viewLifecycleOwner) {
-            val dataSetCategories = viewModel.getCategories()
-            adapter.dataSet = dataSetCategories
+            adapter.dataSet = it.categoriesList
+            adapter.notifyDataSetChanged()
         }
     }
 
@@ -50,7 +50,8 @@ class CategoriesListFragment : Fragment() {
     }
 
     private fun openRecipesByCategoryId(categoryId: Int) {
-        val category = STUB.getCategories().find { category -> category.id == categoryId }
+        val category =
+            viewModel.screenState.value?.categoriesList?.find { category -> category.id == categoryId }
         if (category != null)
             openRecipesByCategory(category)
         else

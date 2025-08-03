@@ -1,22 +1,13 @@
 package com.github.ilyashvetsov.recipes.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.findNavController
 import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.databinding.ActivityMainBinding
-import com.github.ilyashvetsov.recipes.model.Category
-import com.github.ilyashvetsov.recipes.model.Recipe
-import kotlinx.serialization.json.Json
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.logging.HttpLoggingInterceptor
-import java.util.concurrent.Callable
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+
 
 class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
@@ -35,50 +26,48 @@ class MainActivity : AppCompatActivity() {
         binding.btnFavorites.setOnClickListener {
             findNavController(R.id.mainContainer).navigate(R.id.favoritesFragment)
         }
-        val threadPool: ExecutorService = Executors.newFixedThreadPool(10)
-        threadPool.submit {
-            val listRecipesFuture = getListAllCategories().map {
-                threadPool.submit(Callable { getListRecipesByCategory(it) })
-            }
-            val recipeList = listRecipesFuture.map { it.get() }
-            recipeList.forEach { Log.d("!!!", "Рецепты: $it") }
 
-        }
+//            val listRecipesFuture = getListAllCategories().map {
+//                threadPool.submit(Callable { getListRecipesByCategory(it) })
+//            }
+//            val recipeList = listRecipesFuture.map { it.get() }
+//            recipeList.forEach { Log.d("!!!", "Рецепты: $it") }
+
     }
 }
 
-private fun getListAllCategories(): List<Int> {
-    val logging = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
-    val client = OkHttpClient.Builder()
-        .addInterceptor(logging)
-        .build()
-    val request: Request = Request.Builder()
-        .url("https://recipes.androidsprint.ru/api/category")
-        .build()
-    client.newCall(request).execute().use {
-        val categoryJson = it.body?.string()
-        val categoryListObj = Json.decodeFromString<List<Category>>(categoryJson.toString())
-        val categoriesListId = categoryListObj.map { it.id }
-        return categoriesListId
-    }
-}
-
-private fun getListRecipesByCategory(categoryId: Int): List<Recipe> {
-    val logging = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
-    val client = OkHttpClient.Builder()
-        .addInterceptor(logging)
-        .build()
-    val request: Request = Request.Builder()
-        .url("https://recipes.androidsprint.ru/api/category/$categoryId/recipes")
-        .build()
-    client.newCall(request).execute().use {
-        val recipeJson = it.body?.string()
-        val recipeListObj = Json.decodeFromString<List<Recipe>>(recipeJson.toString())
-        return recipeListObj
-    }
-}
+//private fun getListAllCategories(): List<Int> {
+//    val logging = HttpLoggingInterceptor().apply {
+//        level = HttpLoggingInterceptor.Level.BODY
+//    }
+//    val client = OkHttpClient.Builder()
+//        .addInterceptor(logging)
+//        .build()
+//    val request: Request = Request.Builder()
+//        .url("https://recipes.androidsprint.ru/api/category")
+//        .build()
+//    client.newCall(request).execute().use {
+//        val categoryJson = it.body?.string()
+//        val categoryListObj = Json.decodeFromString<List<Category>>(categoryJson.toString())
+//        val categoriesListId = categoryListObj.map { it.id }
+//        return categoriesListId
+//    }
+//}
+//
+//private fun getListRecipesByCategory(categoryId: Int): List<Recipe> {
+//    val logging = HttpLoggingInterceptor().apply {
+//        level = HttpLoggingInterceptor.Level.BODY
+//    }
+//    val client = OkHttpClient.Builder()
+//        .addInterceptor(logging)
+//        .build()
+//    val request: Request = Request.Builder()
+//        .url("https://recipes.androidsprint.ru/api/category/$categoryId/recipes")
+//        .build()
+//    client.newCall(request).execute().use {
+//        val recipeJson = it.body?.string()
+//        val recipeListObj = Json.decodeFromString<List<Recipe>>(recipeJson.toString())
+//        return recipeListObj
+//    }
+//}
 

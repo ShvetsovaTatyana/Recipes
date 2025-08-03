@@ -39,7 +39,7 @@ class IngredientsAdapter(
     class ViewHolder(private val binding: ItemIngredientsBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Ingredient, quantityPortion: Int) {
-            binding.tvIngredient.text = item.ingredient
+            binding.tvIngredient.text = item.description
             val displayQuantity = BigDecimal(item.quantity)
                 .multiply(BigDecimal(quantityPortion))
                 .setScale(1, RoundingMode.HALF_UP)

@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.github.ilyashvetsov.recipes.data.STUB
 import com.github.ilyashvetsov.recipes.databinding.FragmentFavoritesBinding
 import com.github.ilyashvetsov.recipes.ui.recipes.list_of_recipes.RecipesListAdapter
 
@@ -33,9 +32,11 @@ class FavoritesFragment : Fragment() {
     private fun initUI() {
         val adapter = RecipesListAdapter(listOf(), onItemClick = { openRecipeByRecipeId(id = it) })
         binding.rvFavorites.adapter = adapter
+        val dataSetRecipe = viewModel.getFavorites()
+        viewModel.getRecipesByIds(dataSetRecipe.joinToString(","))
         viewModel.screenState.observe(viewLifecycleOwner) {
-            val dataSetRecipe = viewModel.getFavorites()
-            adapter.dataSetRecipe = STUB.getRecipesByIds(dataSetRecipe.map { it.toInt() }.toSet())
+            adapter.dataSetRecipe = it.favoritesList
+            adapter.notifyDataSetChanged()
             if (dataSetRecipe.isEmpty()) {
                 binding.tvPlaceholder.visibility = View.VISIBLE
                 binding.rvFavorites.visibility = View.GONE
