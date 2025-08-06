@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -29,11 +30,16 @@ class RecipesRepository {
 
     fun getRecipeById(recipeId: Int, callback: (Recipe?) -> Unit) {
         threadPool.submit {
-            val call = recipesApiService.getRecipeById(recipeId)
-            val response = call.execute()
-            if (response.isSuccessful) {
-                val recipe = response.body()
-                callback(recipe)
+            try {
+                val call = recipesApiService.getRecipeById(recipeId)
+                val response = call.execute()
+                if (response.isSuccessful) {
+                    val recipe = response.body()
+                    callback(recipe)
+                } else
+                    response.code()
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
         }
     }
@@ -46,17 +52,6 @@ class RecipesRepository {
                 val recipeList = response.body()
                 callback(recipeList)
             }
-        }
-    }
-
-    fun getCategoryById(categoryId: Int): Category? {
-        val call = recipesApiService.getCategoryById(categoryId)
-        val response = call.execute()
-        return if (response.isSuccessful) {
-            val category = response.body()
-            category
-        } else {
-            null
         }
     }
 

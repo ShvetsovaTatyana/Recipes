@@ -18,16 +18,18 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
         val categoriesList: List<Category> = listOf()
     )
 
+    val toastMessage = MutableLiveData<String?>()
+
+    fun showToast(message: String) {
+        toastMessage.value = message
+    }
+
     fun getCategories() {
         recipesRepository.getCategories(callback = {
             if (it != null)
                 _screenState.postValue(CategoriesListScreenState(categoriesList = it))
             else
-                Toast.makeText(
-                    getApplication(),
-                    "Ошибка получения данных",
-                    Toast.LENGTH_LONG
-                ).show()
+                showToast("Ошибка получения данных")
         })
     }
 }

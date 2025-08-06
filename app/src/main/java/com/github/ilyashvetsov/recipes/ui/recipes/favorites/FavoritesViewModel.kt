@@ -21,6 +21,12 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
         val favoritesList: List<Recipe> = listOf()
     )
 
+    val toastMessage = MutableLiveData<String?>()
+
+    fun showToast(message: String) {
+        toastMessage.value = message
+    }
+
     fun getFavorites(): MutableSet<String> {
         val sharedPrefs = getApplication<Application>().getSharedPreferences(
             SHARED_PREFS_SET_FAVORITES_RECIPE,
@@ -36,11 +42,7 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
             if (it != null)
                 _screenState.postValue(FavoritesScreenState(favoritesList = it))
             else
-                Toast.makeText(
-                    getApplication(),
-                    "Ошибка получения данных",
-                    Toast.LENGTH_LONG
-                ).show()
+                showToast("Ошибка получения данных")
         })
 
     }

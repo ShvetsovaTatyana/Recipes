@@ -23,6 +23,11 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
         val categoryImage: Drawable? = null,
         val recipeList: List<Recipe> = listOf()
     )
+    val toastMessage = MutableLiveData<String?>()
+
+    fun showToast(message: String) {
+        toastMessage.value = message
+    }
 
     fun loadCategory(
         categoryId: Int,
@@ -52,11 +57,7 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
                     )
                 }
             } else
-                Toast.makeText(
-                    getApplication(),
-                    "Ошибка получения данных",
-                    Toast.LENGTH_LONG
-                ).show()
+                showToast("Ошибка получения данных")
         })
     }
 }
