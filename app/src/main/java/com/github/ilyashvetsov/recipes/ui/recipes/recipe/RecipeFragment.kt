@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.bumptech.glide.Glide
 import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
@@ -43,7 +44,6 @@ class RecipeFragment : Fragment() {
                 binding.ibFavorites.setImageResource(R.drawable.ic_heart)
             else
                 binding.ibFavorites.setImageResource(R.drawable.ic_heart_empty)
-            binding.ivRecipe.setImageDrawable(it.recipeImage)
             adapter.updateIngredients(it.portionsCount)
             binding.tvProgress.text = "${it.portionsCount}"
             binding.tvRecipe.text = it.recipe?.title
@@ -56,6 +56,12 @@ class RecipeFragment : Fragment() {
             if (it.recipe?.method != null) {
                 adapterMethod.dataSetCookingMethod = it.recipe.method
                 adapterMethod.notifyDataSetChanged()
+            }
+            it.recipeImageUrl?.let { url ->
+                Glide.with(binding.root)
+                    .load(url)
+                    .placeholder(R.drawable.img_placeholder)
+                    .error(R.drawable.img_error).into(binding.ivRecipe)
             }
         }
         binding.seekBar.setOnSeekBarChangeListener(

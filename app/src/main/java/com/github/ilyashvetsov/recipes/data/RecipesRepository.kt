@@ -2,6 +2,7 @@ package com.github.ilyashvetsov.recipes.data
 
 import com.github.ilyashvetsov.recipes.model.Category
 import com.github.ilyashvetsov.recipes.model.Recipe
+import com.github.ilyashvetsov.recipes.ui.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -11,7 +12,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 
-private const val BASE_URL = "https://recipes.androidsprint.ru/api/"
+
 
 class RecipesRepository {
     private val logging = HttpLoggingInterceptor().apply {

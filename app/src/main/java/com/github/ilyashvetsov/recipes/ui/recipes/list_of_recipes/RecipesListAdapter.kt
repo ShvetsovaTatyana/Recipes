@@ -3,10 +3,11 @@ package com.github.ilyashvetsov.recipes.ui.recipes.list_of_recipes
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.model.Recipe
 import com.github.ilyashvetsov.recipes.databinding.ItemCategoryRecipesBinding
-import com.github.ilyashvetsov.recipes.ui.loadImageFromAssets
+import com.github.ilyashvetsov.recipes.ui.BASE_URL
 
 class RecipesListAdapter(
     var dataSetRecipe: List<Recipe>,
@@ -35,7 +36,12 @@ class RecipesListAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Recipe) {
             binding.tvNameDish.text = item.title
-            loadImageFromAssets(item.imageUrl, binding.ivDish)
+            val imageUrl: String =
+                item.imageUrl.let { BASE_URL + "images/" + it }
+            Glide.with(binding.root)
+                .load(imageUrl)
+                .placeholder(R.drawable.img_placeholder)
+                .error(R.drawable.img_error).into(binding.ivDish)
             val categoryImage = itemView.context.getString(R.string.category_image, item.title)
             binding.ivDish.contentDescription = categoryImage
             itemView.setOnClickListener { onItemClick.invoke(item.id) }

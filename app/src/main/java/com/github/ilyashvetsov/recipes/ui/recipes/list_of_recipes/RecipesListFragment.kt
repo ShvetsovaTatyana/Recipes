@@ -1,5 +1,6 @@
 package com.github.ilyashvetsov.recipes.ui.recipes.list_of_recipes
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,8 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.databinding.FragmentRecipesListBinding
 import com.github.ilyashvetsov.recipes.model.Category
 
@@ -28,13 +31,13 @@ class RecipesListFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("CheckResult")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         category = argsRecipesListFragment.category
-        category?.id?.let {
+        category?.let {
             viewModel.loadCategory(
-                categoryId = it,
-                categoryImageUrl = category?.imageUrl ?: ""
+                category = it
             )
         }
         initUI()
@@ -53,10 +56,15 @@ class RecipesListFragment : Fragment() {
         )
         binding.rvCategories.adapter = adapter
         viewModel.screenState.observe(viewLifecycleOwner) { state ->
-            binding.ivRecipeCategory.setImageDrawable(state.categoryImage)
             binding.tvRecipeCategory.text = category?.title
             adapter.dataSetRecipe = state.recipeList
             adapter.notifyDataSetChanged()
+            state.categoryImageUrl?.let { url ->
+                Glide.with(binding.root)
+                    .load(url)
+                    .placeholder(R.drawable.img_placeholder)
+                    .error(R.drawable.img_error).into(binding.ivRecipeCategory)
+            }
         }
     }
 
