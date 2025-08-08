@@ -1,15 +1,13 @@
 package com.github.ilyashvetsov.recipes.ui.recipes.list_of_recipes
 
 import android.app.Application
-import android.graphics.drawable.Drawable
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.ilyashvetsov.recipes.data.RecipesRepository
+import com.github.ilyashvetsov.recipes.model.Category
 import com.github.ilyashvetsov.recipes.model.Recipe
-import java.io.IOException
+import com.github.ilyashvetsov.recipes.ui.BASE_URL
 
 class RecipeListViewModel(application: Application) : AndroidViewModel(application) {
     private val _screenState: MutableLiveData<RecipeListScreenState> =
@@ -18,11 +16,11 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
     private val recipesRepository = RecipesRepository()
 
     data class RecipeListScreenState(
-        val categoryId: Int = 0,
-        val categoryImageUrl: String = "",
-        val categoryImage: Drawable? = null,
+        val category: Category? = null,
+        val categoryImageUrl: String? = null,
         val recipeList: List<Recipe> = listOf()
     )
+
     val toastMessage = MutableLiveData<String?>()
 
     fun showToast(message: String) {
@@ -30,32 +28,19 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun loadCategory(
-        categoryId: Int,
-        categoryImageUrl: String
+        category: Category,
     ) {
-        recipesRepository.getRecipesListByCategoryId(categoryId, callback = {
+        recipesRepository.getRecipesListByCategoryId(category.id, callback = {
             if (it != null) {
+                val imageUrl: String =
+                    category.imageUrl.let { BASE_URL + "images/" + it }
                 _screenState.postValue(
-                    it.let { screenState.value?.copy(recipeList = it) })
-                try {
-                    categoryImageUrl.let {
-                        getApplication<Application>().assets.open(it).use { inputStream ->
-                            val drawable = Drawable.createFromStream(inputStream, null)
-                            drawable?.let {
-                                _screenState.postValue(
-                                    screenState.value?.copy(categoryImage = it)
-                                )
-                            }
-                            drawable
-                        }
-                    }
-                } catch (e: IOException) {
-                    Log.e(
-                        "LoadDrawable",
-                        "Ошибка загрузки drawable из assets: $categoryImageUrl",
-                        e
-                    )
-                }
+                    it.let {
+                        screenState.value?.copy(
+                            recipeList = it,
+                            categoryImageUrl = imageUrl
+                        )
+                    })
             } else
                 showToast("Ошибка получения данных")
         })

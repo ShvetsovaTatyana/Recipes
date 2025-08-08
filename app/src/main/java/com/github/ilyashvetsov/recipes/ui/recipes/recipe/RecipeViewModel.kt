@@ -2,17 +2,15 @@ package com.github.ilyashvetsov.recipes.ui.recipes.recipe
 
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.ilyashvetsov.recipes.data.RecipesRepository
 import com.github.ilyashvetsov.recipes.model.Recipe
+import com.github.ilyashvetsov.recipes.ui.BASE_URL
 import com.github.ilyashvetsov.recipes.ui.FAVORITES_RECIPE_KEY
 import com.github.ilyashvetsov.recipes.ui.SHARED_PREFS_SET_FAVORITES_RECIPE
-import java.io.IOException
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application) {
     private val _screenState: MutableLiveData<RecipeScreenState> =
@@ -25,36 +23,22 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         val recipe: Recipe? = null,
         val isFavorite: Boolean = false,
         var portionsCount: Int = 1,
-        val recipeImage: Drawable? = null
+        val recipeImageUrl: String? = null
     )
 
     fun loadRecipe(id: Int) {
         recipesRepository.getRecipeById(id, callback = { recipe ->
             if (recipe != null) {
+                val imageUrl: String =
+                    recipe.imageUrl.let { BASE_URL + "images/" + it }
                 _screenState.postValue(
                     screenState.value?.copy(
                         recipe = recipe,
                         isFavorite = getFavorites().contains(id.toString()),
+                        recipeImageUrl = imageUrl
                     )
                 )
                 recipeId = id
-                try {
-                    recipe.let {
-                        getApplication<Application>().assets.open(it.imageUrl).use { inputStream ->
-                            val drawable = Drawable.createFromStream(inputStream, null)
-                            drawable?.let {
-                                _screenState.postValue(screenState.value?.copy(recipeImage = it))
-                            }
-                            drawable
-                        }
-                    }
-                } catch (e: IOException) {
-                    Log.e(
-                        "LoadDrawable",
-                        "Ошибка загрузки drawable из assets: ${recipe.imageUrl}",
-                        e
-                    )
-                }
             } else
                 Toast.makeText(
                     getApplication(),
