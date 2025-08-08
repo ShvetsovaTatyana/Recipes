@@ -10,5 +10,5 @@ import kotlinx.serialization.Serializable
 data class Ingredient(
     val quantity: String,
     val unitOfMeasure: String,
-    @SerialName("description") val ingredient: String
+    val description: String
 ) : Parcelable

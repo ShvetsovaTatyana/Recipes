@@ -1,23 +1,35 @@
 package com.github.ilyashvetsov.recipes.ui.categories
 
+import android.app.Application
+import android.widget.Toast
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.github.ilyashvetsov.recipes.data.STUB
+import com.github.ilyashvetsov.recipes.data.RecipesRepository
 import com.github.ilyashvetsov.recipes.model.Category
-import com.github.ilyashvetsov.recipes.model.Recipe
 
-class CategoriesListViewModel() : ViewModel() {
+class CategoriesListViewModel(application: Application) : AndroidViewModel(application) {
     private val _screenState: MutableLiveData<CategoriesListScreenState> =
         MutableLiveData(CategoriesListScreenState())
     val screenState: LiveData<CategoriesListScreenState> = _screenState
+    private val recipesRepository = RecipesRepository()
 
     data class CategoriesListScreenState(
-        val categoriesList: List<Recipe> = listOf()
+        val categoriesList: List<Category> = listOf()
     )
 
-    fun getCategories():List<Category> {
-        val dataSetCategory = STUB.getCategories()
-        return dataSetCategory
+    val toastMessage = MutableLiveData<String?>()
+
+    fun showToast(message: String) {
+        toastMessage.value = message
+    }
+
+    fun getCategories() {
+        recipesRepository.getCategories(callback = {
+            if (it != null)
+                _screenState.postValue(CategoriesListScreenState(categoriesList = it))
+            else
+                showToast("Ошибка получения данных")
+        })
     }
 }

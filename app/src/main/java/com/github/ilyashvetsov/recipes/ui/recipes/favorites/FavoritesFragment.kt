@@ -5,9 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.github.ilyashvetsov.recipes.data.STUB
 import com.github.ilyashvetsov.recipes.databinding.FragmentFavoritesBinding
 import com.github.ilyashvetsov.recipes.ui.recipes.list_of_recipes.RecipesListAdapter
 
@@ -28,14 +28,22 @@ class FavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
+        viewModel.toastMessage.observe(viewLifecycleOwner) { message ->
+            message?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                viewModel.toastMessage.value = null
+            }
+        }
     }
 
     private fun initUI() {
         val adapter = RecipesListAdapter(listOf(), onItemClick = { openRecipeByRecipeId(id = it) })
         binding.rvFavorites.adapter = adapter
+        val dataSetRecipe = viewModel.getFavorites()
+        viewModel.getRecipesByIds(dataSetRecipe.joinToString(","))
         viewModel.screenState.observe(viewLifecycleOwner) {
-            val dataSetRecipe = viewModel.getFavorites()
-            adapter.dataSetRecipe = STUB.getRecipesByIds(dataSetRecipe.map { it.toInt() }.toSet())
+            adapter.dataSetRecipe = it.favoritesList
+            adapter.notifyDataSetChanged()
             if (dataSetRecipe.isEmpty()) {
                 binding.tvPlaceholder.visibility = View.VISIBLE
                 binding.rvFavorites.visibility = View.GONE

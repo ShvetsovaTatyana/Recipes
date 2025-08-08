@@ -4,10 +4,11 @@ import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import android.graphics.drawable.Drawable
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.github.ilyashvetsov.recipes.data.STUB
+import com.github.ilyashvetsov.recipes.data.RecipesRepository
 import com.github.ilyashvetsov.recipes.model.Recipe
 import com.github.ilyashvetsov.recipes.ui.FAVORITES_RECIPE_KEY
 import com.github.ilyashvetsov.recipes.ui.SHARED_PREFS_SET_FAVORITES_RECIPE
@@ -18,6 +19,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         MutableLiveData(RecipeScreenState())
     val screenState: LiveData<RecipeScreenState> = _screenState
     private var recipeId: Int = 0
+    private val recipesRepository = RecipesRepository()
 
     data class RecipeScreenState(
         val recipe: Recipe? = null,
@@ -26,30 +28,40 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         val recipeImage: Drawable? = null
     )
 
-    fun loadRecipe(id: Int): Drawable? {
-        //TODO("load from network")
-        val recipe = STUB.getRecipeById(id)
-        if (recipe != null) {
-            _screenState.value = screenState.value?.copy(
-                recipe = recipe,
-                isFavorite = getFavorites().contains(id.toString()),
-            )
-        }
-        recipeId = id
-        return try {
-            recipe?.let {
-                getApplication<Application>().assets.open(it.imageUrl).use { inputStream ->
-                    val drawable = Drawable.createFromStream(inputStream, null)
-                    drawable?.let {
-                        _screenState.value = screenState.value?.copy(recipeImage = it)
+    fun loadRecipe(id: Int) {
+        recipesRepository.getRecipeById(id, callback = { recipe ->
+            if (recipe != null) {
+                _screenState.postValue(
+                    screenState.value?.copy(
+                        recipe = recipe,
+                        isFavorite = getFavorites().contains(id.toString()),
+                    )
+                )
+                recipeId = id
+                try {
+                    recipe.let {
+                        getApplication<Application>().assets.open(it.imageUrl).use { inputStream ->
+                            val drawable = Drawable.createFromStream(inputStream, null)
+                            drawable?.let {
+                                _screenState.postValue(screenState.value?.copy(recipeImage = it))
+                            }
+                            drawable
+                        }
                     }
-                    drawable
+                } catch (e: IOException) {
+                    Log.e(
+                        "LoadDrawable",
+                        "Ошибка загрузки drawable из assets: ${recipe.imageUrl}",
+                        e
+                    )
                 }
-            }
-        } catch (e: IOException) {
-            Log.e("LoadDrawable", "Ошибка загрузки drawable из assets: ${recipe?.imageUrl}", e)
-            null
-        }
+            } else
+                Toast.makeText(
+                    getApplication(),
+                    "Ошибка получения данных",
+                    Toast.LENGTH_LONG
+                ).show()
+        })
     }
 
     private fun getFavorites(): MutableSet<String> {

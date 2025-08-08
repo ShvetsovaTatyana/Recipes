@@ -49,10 +49,14 @@ class RecipeFragment : Fragment() {
             binding.tvRecipe.text = it.recipe?.title
             val contentDescription = "Изображение рецепта \"${it.recipe?.title}\""
             binding.ivRecipe.contentDescription = contentDescription
-            if (it.recipe?.ingredients != null)
+            if (it.recipe?.ingredients != null) {
                 adapter.dataSetIngredient = it.recipe.ingredients
-            if (it.recipe?.method != null)
+                adapter.notifyDataSetChanged()
+            }
+            if (it.recipe?.method != null) {
                 adapterMethod.dataSetCookingMethod = it.recipe.method
+                adapterMethod.notifyDataSetChanged()
+            }
         }
         binding.seekBar.setOnSeekBarChangeListener(
             PortionSeekBarListener(onChangeIngredients = viewModel::calculationNumberServings)
