@@ -6,11 +6,15 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.github.ilyashvetsov.recipes.data.RecipesRepository
 import com.github.ilyashvetsov.recipes.model.Recipe
 import com.github.ilyashvetsov.recipes.ui.BASE_URL
 import com.github.ilyashvetsov.recipes.ui.FAVORITES_RECIPE_KEY
 import com.github.ilyashvetsov.recipes.ui.SHARED_PREFS_SET_FAVORITES_RECIPE
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application) {
     private val _screenState: MutableLiveData<RecipeScreenState> =
@@ -27,25 +31,28 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
     )
 
     fun loadRecipe(id: Int) {
-        recipesRepository.getRecipeById(id, callback = { recipe ->
-            if (recipe != null) {
-                val imageUrl: String =
-                    recipe.imageUrl.let { BASE_URL + "images/" + it }
-                _screenState.postValue(
-                    screenState.value?.copy(
-                        recipe = recipe,
-                        isFavorite = getFavorites().contains(id.toString()),
-                        recipeImageUrl = imageUrl
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val recipe = recipesRepository.getRecipeById(id)
+                if (recipe != null) {
+                    val imageUrl: String =
+                        recipe.imageUrl.let { BASE_URL + "images/" + it }
+                    _screenState.postValue(
+                        screenState.value?.copy(
+                            recipe = recipe,
+                            isFavorite = getFavorites().contains(id.toString()),
+                            recipeImageUrl = imageUrl
+                        )
                     )
-                )
-                recipeId = id
-            } else
-                Toast.makeText(
-                    getApplication(),
-                    "Ошибка получения данных",
-                    Toast.LENGTH_LONG
-                ).show()
-        })
+                    recipeId = id
+                } else
+                    Toast.makeText(
+                        getApplication(),
+                        "Ошибка получения данных",
+                        Toast.LENGTH_LONG
+                    ).show()
+            }
+        }
     }
 
     private fun getFavorites(): MutableSet<String> {

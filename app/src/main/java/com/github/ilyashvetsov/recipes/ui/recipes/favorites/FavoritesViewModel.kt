@@ -6,10 +6,14 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.github.ilyashvetsov.recipes.data.RecipesRepository
 import com.github.ilyashvetsov.recipes.model.Recipe
 import com.github.ilyashvetsov.recipes.ui.FAVORITES_RECIPE_KEY
 import com.github.ilyashvetsov.recipes.ui.SHARED_PREFS_SET_FAVORITES_RECIPE
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
     private val _screenState: MutableLiveData<FavoritesScreenState> =
@@ -24,7 +28,7 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
     val toastMessage = MutableLiveData<String?>()
 
     fun showToast(message: String) {
-        toastMessage.value = message
+        toastMessage.postValue(message)
     }
 
     fun getFavorites(): MutableSet<String> {
@@ -38,12 +42,14 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun getRecipesByIds(ids: String) {
-        recipesRepository.getRecipesListByIds(ids, callback = {
-            if (it != null)
-                _screenState.postValue(FavoritesScreenState(favoritesList = it))
-            else
-                showToast("Ошибка получения данных")
-        })
-
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val favoritesList = recipesRepository.getRecipesListByIds(ids)
+                if (favoritesList != null)
+                    _screenState.postValue(FavoritesScreenState(favoritesList = favoritesList))
+                else
+                    showToast("Ошибка получения данных")
+            }
+        }
     }
 }

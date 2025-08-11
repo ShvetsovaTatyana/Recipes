@@ -4,10 +4,14 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.github.ilyashvetsov.recipes.data.RecipesRepository
 import com.github.ilyashvetsov.recipes.model.Category
 import com.github.ilyashvetsov.recipes.model.Recipe
 import com.github.ilyashvetsov.recipes.ui.BASE_URL
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RecipeListViewModel(application: Application) : AndroidViewModel(application) {
     private val _screenState: MutableLiveData<RecipeListScreenState> =
@@ -24,25 +28,26 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
     val toastMessage = MutableLiveData<String?>()
 
     fun showToast(message: String) {
-        toastMessage.value = message
+        toastMessage.postValue(message)
     }
 
-    fun loadCategory(
-        category: Category,
-    ) {
-        recipesRepository.getRecipesListByCategoryId(category.id, callback = {
-            if (it != null) {
-                val imageUrl: String =
-                    category.imageUrl.let { BASE_URL + "images/" + it }
-                _screenState.postValue(
-                    it.let {
-                        screenState.value?.copy(
-                            recipeList = it,
-                            categoryImageUrl = imageUrl
-                        )
-                    })
-            } else
-                showToast("Ошибка получения данных")
-        })
+    fun loadCategory(category: Category) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val recipeList = recipesRepository.getRecipesListByCategoryId(category.id)
+                if (recipeList != null) {
+                    val imageUrl: String =
+                        category.imageUrl.let { BASE_URL + "images/" + it }
+                    _screenState.postValue(
+                        recipeList.let {
+                            screenState.value?.copy(
+                                recipeList = it,
+                                categoryImageUrl = imageUrl
+                            )
+                        })
+                } else
+                    showToast("Ошибка получения данных")
+            }
+        }
     }
 }
