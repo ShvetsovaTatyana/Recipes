@@ -40,12 +40,15 @@ class IngredientsAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Ingredient, quantityPortion: Int) {
             binding.tvIngredient.text = item.description
-            val displayQuantity = BigDecimal(item.quantity)
-                .multiply(BigDecimal(quantityPortion))
-                .setScale(1, RoundingMode.HALF_UP)
-                .stripTrailingZeros()
-                .toPlainString()
-            binding.tvAmountOfIngredient.text = "$displayQuantity ${item.unitOfMeasure}"
+            if (item.quantity.toDoubleOrNull() != null) {
+                val displayQuantity = BigDecimal(item.quantity)
+                    .multiply(BigDecimal(quantityPortion))
+                    .setScale(1, RoundingMode.HALF_UP)
+                    .stripTrailingZeros()
+                    .toPlainString()
+                binding.tvAmountOfIngredient.text = "$displayQuantity ${item.unitOfMeasure}"
+            } else
+                binding.tvAmountOfIngredient.text = "${item.quantity}"
         }
     }
 }

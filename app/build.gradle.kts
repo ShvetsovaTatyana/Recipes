@@ -5,6 +5,7 @@ plugins {
     kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
     kotlin("plugin.serialization")
+    id("kotlin-kapt")
 }
 
 android {
@@ -60,4 +61,7 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.retrofit)
     implementation(libs.retrofit2.converter.gson)
+    implementation(libs.glide)
+    //noinspection KaptUsageInsteadOfKsp
+    kapt(libs.compiler)
 }
