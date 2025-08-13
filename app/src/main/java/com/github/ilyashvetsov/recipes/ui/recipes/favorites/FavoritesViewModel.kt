@@ -2,7 +2,6 @@ package com.github.ilyashvetsov.recipes.ui.recipes.favorites
 
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,9 +10,7 @@ import com.github.ilyashvetsov.recipes.data.RecipesRepository
 import com.github.ilyashvetsov.recipes.model.Recipe
 import com.github.ilyashvetsov.recipes.ui.FAVORITES_RECIPE_KEY
 import com.github.ilyashvetsov.recipes.ui.SHARED_PREFS_SET_FAVORITES_RECIPE
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
     private val _screenState: MutableLiveData<FavoritesScreenState> =
@@ -43,13 +40,11 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun getRecipesByIds(ids: String) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val favoritesList = recipesRepository.getRecipesListByIds(ids)
-                if (favoritesList != null)
-                    _screenState.postValue(FavoritesScreenState(favoritesList = favoritesList))
-                else
-                    showToast("Ошибка получения данных")
-            }
+            val favoritesList = recipesRepository.getRecipesListByIds(ids)
+            if (favoritesList != null)
+                _screenState.postValue(FavoritesScreenState(favoritesList = favoritesList))
+            else
+                showToast("Ошибка получения данных")
         }
     }
 }

@@ -7,9 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.github.ilyashvetsov.recipes.data.RecipesRepository
 import com.github.ilyashvetsov.recipes.model.Category
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class CategoriesListViewModel(application: Application) : AndroidViewModel(application) {
     private val _screenState: MutableLiveData<CategoriesListScreenState> =
@@ -29,13 +27,11 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
 
     fun getCategories() {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val categoryList = recipesRepository.getCategories()
-                if (categoryList != null)
-                    _screenState.postValue(CategoriesListScreenState(categoriesList = categoryList))
-                else
-                    showToast("Ошибка получения данных")
-            }
+            val categoryList = recipesRepository.getCategories()
+            if (categoryList != null)
+                _screenState.postValue(CategoriesListScreenState(categoriesList = categoryList))
+            else
+                showToast("Ошибка получения данных")
         }
     }
 }

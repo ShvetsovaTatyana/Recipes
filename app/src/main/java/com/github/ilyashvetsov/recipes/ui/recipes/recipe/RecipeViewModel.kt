@@ -2,7 +2,6 @@ package com.github.ilyashvetsov.recipes.ui.recipes.recipe
 
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,9 +11,7 @@ import com.github.ilyashvetsov.recipes.model.Recipe
 import com.github.ilyashvetsov.recipes.ui.BASE_URL
 import com.github.ilyashvetsov.recipes.ui.FAVORITES_RECIPE_KEY
 import com.github.ilyashvetsov.recipes.ui.SHARED_PREFS_SET_FAVORITES_RECIPE
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application) {
     private val _screenState: MutableLiveData<RecipeScreenState> =
@@ -30,28 +27,28 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         val recipeImageUrl: String? = null
     )
 
+    val toastMessage = MutableLiveData<String?>()
+
+    fun showToast(message: String) {
+        toastMessage.value = message
+    }
+
     fun loadRecipe(id: Int) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val recipe = recipesRepository.getRecipeById(id)
-                if (recipe != null) {
-                    val imageUrl: String =
-                        recipe.imageUrl.let { BASE_URL + "images/" + it }
-                    _screenState.postValue(
-                        screenState.value?.copy(
-                            recipe = recipe,
-                            isFavorite = getFavorites().contains(id.toString()),
-                            recipeImageUrl = imageUrl
-                        )
+            val recipe = recipesRepository.getRecipeById(id)
+            if (recipe != null) {
+                val imageUrl: String =
+                    recipe.imageUrl.let { BASE_URL + "images/" + it }
+                _screenState.postValue(
+                    screenState.value?.copy(
+                        recipe = recipe,
+                        isFavorite = getFavorites().contains(id.toString()),
+                        recipeImageUrl = imageUrl
                     )
-                    recipeId = id
-                } else
-                    Toast.makeText(
-                        getApplication(),
-                        "Ошибка получения данных",
-                        Toast.LENGTH_LONG
-                    ).show()
-            }
+                )
+                recipeId = id
+            } else
+                showToast("Ошибка получения данных")
         }
     }
 

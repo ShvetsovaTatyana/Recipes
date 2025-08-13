@@ -9,9 +9,7 @@ import com.github.ilyashvetsov.recipes.data.RecipesRepository
 import com.github.ilyashvetsov.recipes.model.Category
 import com.github.ilyashvetsov.recipes.model.Recipe
 import com.github.ilyashvetsov.recipes.ui.BASE_URL
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class RecipeListViewModel(application: Application) : AndroidViewModel(application) {
     private val _screenState: MutableLiveData<RecipeListScreenState> =
@@ -33,21 +31,19 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
 
     fun loadCategory(category: Category) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val recipeList = recipesRepository.getRecipesListByCategoryId(category.id)
-                if (recipeList != null) {
-                    val imageUrl: String =
-                        category.imageUrl.let { BASE_URL + "images/" + it }
-                    _screenState.postValue(
-                        recipeList.let {
-                            screenState.value?.copy(
-                                recipeList = it,
-                                categoryImageUrl = imageUrl
-                            )
-                        })
-                } else
-                    showToast("Ошибка получения данных")
-            }
+            val recipeList = recipesRepository.getRecipesListByCategoryId(category.id)
+            if (recipeList != null) {
+                val imageUrl: String =
+                    category.imageUrl.let { BASE_URL + "images/" + it }
+                _screenState.postValue(
+                    recipeList.let {
+                        screenState.value?.copy(
+                            recipeList = it,
+                            categoryImageUrl = imageUrl
+                        )
+                    })
+            } else
+                showToast("Ошибка получения данных")
         }
     }
 }
