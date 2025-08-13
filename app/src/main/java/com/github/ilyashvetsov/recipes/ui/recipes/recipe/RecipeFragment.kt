@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -28,6 +29,12 @@ class RecipeFragment : Fragment() {
         initUI()
         val recipeId = recipeFragmentArgs.recipeId
         viewModel.loadRecipe(recipeId)
+        viewModel.toastMessage.observe(viewLifecycleOwner) { message ->
+            message?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                viewModel.toastMessage.value = null
+            }
+        }
     }
 
     private fun initUI() {

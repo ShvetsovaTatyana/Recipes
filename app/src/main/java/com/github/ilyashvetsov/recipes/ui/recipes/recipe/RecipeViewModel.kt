@@ -2,15 +2,16 @@ package com.github.ilyashvetsov.recipes.ui.recipes.recipe
 
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.github.ilyashvetsov.recipes.data.RecipesRepository
 import com.github.ilyashvetsov.recipes.model.Recipe
 import com.github.ilyashvetsov.recipes.ui.BASE_URL
 import com.github.ilyashvetsov.recipes.ui.FAVORITES_RECIPE_KEY
 import com.github.ilyashvetsov.recipes.ui.SHARED_PREFS_SET_FAVORITES_RECIPE
+import kotlinx.coroutines.launch
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application) {
     private val _screenState: MutableLiveData<RecipeScreenState> =
@@ -26,8 +27,15 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         val recipeImageUrl: String? = null
     )
 
+    val toastMessage = MutableLiveData<String?>()
+
+    fun showToast(message: String) {
+        toastMessage.value = message
+    }
+
     fun loadRecipe(id: Int) {
-        recipesRepository.getRecipeById(id, callback = { recipe ->
+        viewModelScope.launch {
+            val recipe = recipesRepository.getRecipeById(id)
             if (recipe != null) {
                 val imageUrl: String =
                     recipe.imageUrl.let { BASE_URL + "images/" + it }
@@ -40,12 +48,8 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
                 )
                 recipeId = id
             } else
-                Toast.makeText(
-                    getApplication(),
-                    "Ошибка получения данных",
-                    Toast.LENGTH_LONG
-                ).show()
-        })
+                showToast("Ошибка получения данных")
+        }
     }
 
     private fun getFavorites(): MutableSet<String> {

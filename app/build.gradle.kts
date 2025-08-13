@@ -5,7 +5,6 @@ plugins {
     kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
     kotlin("plugin.serialization")
-    id("kotlin-kapt")
 }
 
 android {

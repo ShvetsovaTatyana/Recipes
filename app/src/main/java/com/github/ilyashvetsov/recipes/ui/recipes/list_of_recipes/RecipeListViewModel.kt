@@ -4,10 +4,12 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.github.ilyashvetsov.recipes.data.RecipesRepository
 import com.github.ilyashvetsov.recipes.model.Category
 import com.github.ilyashvetsov.recipes.model.Recipe
 import com.github.ilyashvetsov.recipes.ui.BASE_URL
+import kotlinx.coroutines.launch
 
 class RecipeListViewModel(application: Application) : AndroidViewModel(application) {
     private val _screenState: MutableLiveData<RecipeListScreenState> =
@@ -24,18 +26,17 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
     val toastMessage = MutableLiveData<String?>()
 
     fun showToast(message: String) {
-        toastMessage.value = message
+        toastMessage.postValue(message)
     }
 
-    fun loadCategory(
-        category: Category,
-    ) {
-        recipesRepository.getRecipesListByCategoryId(category.id, callback = {
-            if (it != null) {
+    fun loadCategory(category: Category) {
+        viewModelScope.launch {
+            val recipeList = recipesRepository.getRecipesListByCategoryId(category.id)
+            if (recipeList != null) {
                 val imageUrl: String =
                     category.imageUrl.let { BASE_URL + "images/" + it }
                 _screenState.postValue(
-                    it.let {
+                    recipeList.let {
                         screenState.value?.copy(
                             recipeList = it,
                             categoryImageUrl = imageUrl
@@ -43,6 +44,6 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
                     })
             } else
                 showToast("Ошибка получения данных")
-        })
+        }
     }
 }
