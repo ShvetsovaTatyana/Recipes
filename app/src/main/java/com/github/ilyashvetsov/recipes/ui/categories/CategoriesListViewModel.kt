@@ -4,8 +4,10 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.github.ilyashvetsov.recipes.data.RecipesRepository
 import com.github.ilyashvetsov.recipes.model.Category
+import kotlinx.coroutines.launch
 
 class CategoriesListViewModel(application: Application) : AndroidViewModel(application) {
     private val _screenState: MutableLiveData<CategoriesListScreenState> =
@@ -24,11 +26,12 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
     }
 
     fun getCategories() {
-        recipesRepository.getCategories(callback = {
-            if (it != null)
-                _screenState.postValue(CategoriesListScreenState(categoriesList = it))
+        viewModelScope.launch {
+            val categoryList = recipesRepository.getCategories()
+            if (categoryList != null)
+                _screenState.postValue(CategoriesListScreenState(categoriesList = categoryList))
             else
                 showToast("Ошибка получения данных")
-        })
+        }
     }
 }

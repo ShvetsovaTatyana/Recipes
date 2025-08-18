@@ -3,15 +3,12 @@ package com.github.ilyashvetsov.recipes.data
 import com.github.ilyashvetsov.recipes.model.Category
 import com.github.ilyashvetsov.recipes.model.Recipe
 import com.github.ilyashvetsov.recipes.ui.BASE_URL
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-
-
 
 
 class RecipesRepository {
@@ -27,53 +24,51 @@ class RecipesRepository {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val recipesApiService = retrofit.create(RecipeApiService::class.java)
-    private val threadPool: ExecutorService = Executors.newFixedThreadPool(10)
 
-    fun getRecipeById(recipeId: Int, callback: (Recipe?) -> Unit) {
-        threadPool.submit {
+    suspend fun getRecipeById(recipeId: Int): Recipe? {
+        return withContext(Dispatchers.IO) {
             try {
-                val call = recipesApiService.getRecipeById(recipeId)
-                val response = call.execute()
-                if (response.isSuccessful) {
-                    val recipe = response.body()
-                    callback(recipe)
-                } else
-                    response.code()
-            } catch (e: IOException) {
+                val recipe = recipesApiService.getRecipeById(recipeId)
+                recipe
+            } catch (e: Exception) {
                 e.printStackTrace()
+                null
             }
         }
     }
 
-    fun getRecipesListByIds(ids: String, callback: (List<Recipe>?) -> Unit) {
-        threadPool.submit {
-            val call = recipesApiService.getRecipesListByIds(ids)
-            val response = call.execute()
-            if (response.isSuccessful) {
-                val recipeList = response.body()
-                callback(recipeList)
+    suspend fun getRecipesListByIds(ids: String): List<Recipe>? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val recipeList = recipesApiService.getRecipesListByIds(ids)
+                recipeList
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
             }
         }
     }
 
-    fun getRecipesListByCategoryId(categoryId: Int, callback: (List<Recipe>?) -> Unit) {
-        threadPool.submit {
-            val call = recipesApiService.getRecipesListByCategoryId(categoryId)
-            val response = call.execute()
-            if (response.isSuccessful) {
-                val recipesList = response.body()
-                callback(recipesList)
+    suspend fun getRecipesListByCategoryId(categoryId: Int): List<Recipe>? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val recipesList = recipesApiService.getRecipesListByCategoryId(categoryId)
+                recipesList
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
             }
         }
     }
 
-    fun getCategories(callback: (List<Category>?) -> Unit) {
-        threadPool.submit {
-            val call = recipesApiService.getCategories()
-            val response = call.execute()
-            if (response.isSuccessful) {
-                val categories = response.body()
-                callback(categories)
+    suspend fun getCategories(): List<Category>? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val listCategory = recipesApiService.getCategories()
+                listCategory
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
             }
         }
     }
