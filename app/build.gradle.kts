@@ -5,6 +5,7 @@ plugins {
     kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
     kotlin("plugin.serialization")
+    id ("com.google.devtools.ksp")
 }
 
 android {
@@ -17,7 +18,6 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -63,4 +63,7 @@ dependencies {
     implementation(libs.glide)
     //noinspection KaptUsageInsteadOfKsp
     kapt(libs.compiler)
+    implementation (libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
+    implementation (libs.androidx.room.ktx)
 }
