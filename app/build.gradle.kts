@@ -2,10 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-parcelize")
-    kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
     kotlin("plugin.serialization")
-    id ("com.google.devtools.ksp")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -61,9 +60,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit2.converter.gson)
     implementation(libs.glide)
-    //noinspection KaptUsageInsteadOfKsp
-    kapt(libs.compiler)
-    implementation (libs.androidx.room.runtime)
-    annotationProcessor(libs.androidx.room.compiler)
-    implementation (libs.androidx.room.ktx)
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 }
