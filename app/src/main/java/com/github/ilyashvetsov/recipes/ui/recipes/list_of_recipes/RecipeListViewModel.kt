@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.github.ilyashvetsov.recipes.data.RecipeDataBase
 import com.github.ilyashvetsov.recipes.data.RecipesRepository
 import com.github.ilyashvetsov.recipes.model.Category
 import com.github.ilyashvetsov.recipes.model.Recipe
@@ -15,7 +16,7 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
     private val _screenState: MutableLiveData<RecipeListScreenState> =
         MutableLiveData(RecipeListScreenState())
     val screenState: LiveData<RecipeListScreenState> = _screenState
-    private val recipesRepository = RecipesRepository()
+    private val recipesRepository = RecipesRepository(RecipeDataBase.getInstance(application))
 
     data class RecipeListScreenState(
         val category: Category? = null,

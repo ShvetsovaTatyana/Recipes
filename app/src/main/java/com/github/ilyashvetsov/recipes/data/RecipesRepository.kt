@@ -11,7 +11,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class RecipesRepository {
+class RecipesRepository(
+    private val recipeDatabase: RecipeDataBase
+) {
     private val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
@@ -24,6 +26,19 @@ class RecipesRepository {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val recipesApiService = retrofit.create(RecipeApiService::class.java)
+    private val recipeDao: RecipeDao = recipeDatabase.recipeDao()
+
+    suspend fun getCategoriesFromCache(): List<Category> {
+        return withContext(Dispatchers.IO) {
+            recipeDao.getAllCategories()
+        }
+    }
+
+    suspend fun insertCategories(categories: List<Category>) {
+        withContext(Dispatchers.IO) {
+            recipeDao.insertCategories(categories = categories)
+        }
+    }
 
     suspend fun getRecipeById(recipeId: Int): Recipe? {
         return withContext(Dispatchers.IO) {
