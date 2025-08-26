@@ -10,6 +10,7 @@ import com.github.ilyashvetsov.recipes.data.RecipesRepository
 import com.github.ilyashvetsov.recipes.model.Category
 import com.github.ilyashvetsov.recipes.model.Recipe
 import com.github.ilyashvetsov.recipes.ui.BASE_URL
+import com.github.ilyashvetsov.recipes.ui.recipes.recipe.RecipeViewModel.RecipeScreenState
 import kotlinx.coroutines.launch
 
 class RecipeListViewModel(application: Application) : AndroidViewModel(application) {
@@ -32,8 +33,11 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
 
     fun loadCategory(category: Category) {
         viewModelScope.launch {
+            val cachedRecipe = recipesRepository.getRecipesFromCache(categoryId = category.id)
+            _screenState.postValue(RecipeListScreenState(recipeList = cachedRecipe))
             val recipeList = recipesRepository.getRecipesListByCategoryId(category.id)
             if (recipeList != null) {
+                recipesRepository.insertRecipes(recipeList)
                 val imageUrl: String =
                     category.imageUrl.let { BASE_URL + "images/" + it }
                 _screenState.postValue(
