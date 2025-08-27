@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.databinding.FragmentRecipesListBinding
 import com.github.ilyashvetsov.recipes.model.Category
+import com.github.ilyashvetsov.recipes.ui.UiEvent
 
 class RecipesListFragment : Fragment() {
     private var _binding: FragmentRecipesListBinding? = null
@@ -41,10 +42,11 @@ class RecipesListFragment : Fragment() {
             )
         }
         initUI()
-        viewModel.toastMessage.observe(viewLifecycleOwner) { message ->
-            message?.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-                viewModel.toastMessage.value = null
+        viewModel.uiEvent.observe(viewLifecycleOwner) { event ->
+            when (event) {
+                is UiEvent.Error -> {
+                    Toast.makeText(requireContext(), event.message, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

@@ -11,6 +11,7 @@ import com.github.ilyashvetsov.recipes.data.RecipesRepository
 import com.github.ilyashvetsov.recipes.model.Recipe
 import com.github.ilyashvetsov.recipes.ui.FAVORITES_RECIPE_KEY
 import com.github.ilyashvetsov.recipes.ui.SHARED_PREFS_SET_FAVORITES_RECIPE
+import com.github.ilyashvetsov.recipes.ui.UiEvent
 import kotlinx.coroutines.launch
 
 class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
@@ -23,10 +24,10 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
         val favoritesList: List<Recipe> = listOf()
     )
 
-    val toastMessage = MutableLiveData<String?>()
+    val uiEvent = MutableLiveData<UiEvent>()
 
-    fun showToast(message: String) {
-        toastMessage.postValue(message)
+    fun showToast() {
+        uiEvent.postValue(UiEvent.Error("Ошибка получения данных"))
     }
 
     fun getFavorites(): MutableSet<String> {
@@ -45,7 +46,7 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
             if (favoritesList != null)
                 _screenState.postValue(FavoritesScreenState(favoritesList = favoritesList))
             else
-                showToast("Ошибка получения данных")
+                showToast()
         }
     }
 }

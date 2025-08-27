@@ -10,6 +10,7 @@ import com.github.ilyashvetsov.recipes.data.RecipesRepository
 import com.github.ilyashvetsov.recipes.model.Category
 import com.github.ilyashvetsov.recipes.model.Recipe
 import com.github.ilyashvetsov.recipes.ui.BASE_URL
+import com.github.ilyashvetsov.recipes.ui.UiEvent
 import com.github.ilyashvetsov.recipes.ui.recipes.recipe.RecipeViewModel.RecipeScreenState
 import kotlinx.coroutines.launch
 
@@ -25,10 +26,10 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
         val recipeList: List<Recipe> = listOf()
     )
 
-    val toastMessage = MutableLiveData<String?>()
+    val uiEvent = MutableLiveData<UiEvent>()
 
-    fun showToast(message: String) {
-        toastMessage.postValue(message)
+    fun showToast() {
+        uiEvent.postValue(UiEvent.Error("Ошибка получения данных"))
     }
 
     fun loadCategory(category: Category) {
@@ -48,7 +49,7 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
                         )
                     })
             } else
-                showToast("Ошибка получения данных")
+                showToast()
         }
     }
 }
