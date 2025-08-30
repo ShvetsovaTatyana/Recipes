@@ -40,6 +40,16 @@ class RecipesRepository(
         }
     }
 
+    suspend fun getRecipesFromCache(categoryId: Int): List<Recipe> {
+        return withContext(Dispatchers.IO) { recipeDao.getAllRecipes(categoryId = categoryId) }
+    }
+
+    suspend fun insertRecipes(recipes: List<Recipe>) {
+        withContext(Dispatchers.IO) {
+            recipeDao.insertRecipes(recipe = recipes)
+        }
+    }
+
     suspend fun getRecipeById(recipeId: Int): Recipe? {
         return withContext(Dispatchers.IO) {
             try {
@@ -68,7 +78,7 @@ class RecipesRepository(
         return withContext(Dispatchers.IO) {
             try {
                 val recipesList = recipesApiService.getRecipesListByCategoryId(categoryId)
-                recipesList
+                recipesList.map { recipe -> recipe.copy(categoryId = categoryId) }
             } catch (e: Exception) {
                 e.printStackTrace()
                 null

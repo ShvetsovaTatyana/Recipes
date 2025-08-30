@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.github.ilyashvetsov.recipes.data.RecipeDataBase
 import com.github.ilyashvetsov.recipes.data.RecipesRepository
 import com.github.ilyashvetsov.recipes.model.Category
+import com.github.ilyashvetsov.recipes.ui.UiEvent
 import kotlinx.coroutines.launch
 
 class CategoriesListViewModel(application: Application) : AndroidViewModel(application) {
@@ -20,10 +21,10 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
         val categoriesList: List<Category> = listOf()
     )
 
-    val toastMessage = MutableLiveData<String?>()
+    val uiEvent = MutableLiveData<UiEvent>()
 
-    fun showToast(message: String) {
-        toastMessage.value = message
+    fun showToast() {
+        uiEvent.postValue(UiEvent.Error("Ошибка получения данных"))
     }
 
     fun getCategories() {
@@ -35,7 +36,7 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
                 recipesRepository.insertCategories(categoryList)
                 _screenState.postValue(CategoriesListScreenState(categoryList))
             } else
-                showToast("Ошибка получения данных")
+                showToast()
         }
     }
 }

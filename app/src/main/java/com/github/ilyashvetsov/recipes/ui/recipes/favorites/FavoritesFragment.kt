@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.github.ilyashvetsov.recipes.databinding.FragmentFavoritesBinding
+import com.github.ilyashvetsov.recipes.ui.UiEvent
 import com.github.ilyashvetsov.recipes.ui.recipes.list_of_recipes.RecipesListAdapter
 
 class FavoritesFragment : Fragment() {
@@ -28,10 +29,11 @@ class FavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
-        viewModel.toastMessage.observe(viewLifecycleOwner) { message ->
-            message?.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-                viewModel.toastMessage.value = null
+        viewModel.uiEvent.observe(viewLifecycleOwner) { event ->
+            when (event) {
+                is UiEvent.Error -> {
+                    Toast.makeText(requireContext(), event.message, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

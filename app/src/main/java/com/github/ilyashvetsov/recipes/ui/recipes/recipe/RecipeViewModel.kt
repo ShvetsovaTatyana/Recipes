@@ -12,6 +12,7 @@ import com.github.ilyashvetsov.recipes.model.Recipe
 import com.github.ilyashvetsov.recipes.ui.BASE_URL
 import com.github.ilyashvetsov.recipes.ui.FAVORITES_RECIPE_KEY
 import com.github.ilyashvetsov.recipes.ui.SHARED_PREFS_SET_FAVORITES_RECIPE
+import com.github.ilyashvetsov.recipes.ui.UiEvent
 import kotlinx.coroutines.launch
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application) {
@@ -28,10 +29,10 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         val recipeImageUrl: String? = null
     )
 
-    val toastMessage = MutableLiveData<String?>()
+    val uiEvent = MutableLiveData<UiEvent>()
 
-    fun showToast(message: String) {
-        toastMessage.value = message
+    fun showToast() {
+        uiEvent.postValue(UiEvent.Error("Ошибка получения данных"))
     }
 
     fun loadRecipe(id: Int) {
@@ -49,7 +50,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
                 )
                 recipeId = id
             } else
-                showToast("Ошибка получения данных")
+                showToast()
         }
     }
 
