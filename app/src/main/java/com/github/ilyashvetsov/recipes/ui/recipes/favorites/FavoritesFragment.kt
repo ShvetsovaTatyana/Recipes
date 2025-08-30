@@ -41,12 +41,11 @@ class FavoritesFragment : Fragment() {
     private fun initUI() {
         val adapter = RecipesListAdapter(listOf(), onItemClick = { openRecipeByRecipeId(id = it) })
         binding.rvFavorites.adapter = adapter
-        val dataSetRecipe = viewModel.getFavorites()
-        viewModel.getRecipesByIds(dataSetRecipe.joinToString(","))
+        viewModel.getFavoritesRecipes()
         viewModel.screenState.observe(viewLifecycleOwner) {
             adapter.dataSetRecipe = it.favoritesList
             adapter.notifyDataSetChanged()
-            if (dataSetRecipe.isEmpty()) {
+            if (it.favoritesList.isEmpty()) {
                 binding.tvPlaceholder.visibility = View.VISIBLE
                 binding.rvFavorites.visibility = View.GONE
             } else {
