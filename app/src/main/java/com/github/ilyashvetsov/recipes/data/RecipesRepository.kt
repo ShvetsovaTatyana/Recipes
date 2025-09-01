@@ -10,7 +10,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-
 class RecipesRepository(
     private val recipeDatabase: RecipeDataBase
 ) {
@@ -47,6 +46,18 @@ class RecipesRepository(
     suspend fun insertRecipes(recipes: List<Recipe>) {
         withContext(Dispatchers.IO) {
             recipeDao.insertRecipes(recipe = recipes)
+        }
+    }
+
+    suspend fun getFavoritesFromCache(): List<Recipe> {
+        return withContext(Dispatchers.IO) {
+            recipeDao.getFavorites()
+        }
+    }
+
+    suspend fun insertFavorites(recipe: Recipe) {
+        withContext(Dispatchers.IO) {
+            recipeDao.insertFavorites(recipe = recipe)
         }
     }
 
