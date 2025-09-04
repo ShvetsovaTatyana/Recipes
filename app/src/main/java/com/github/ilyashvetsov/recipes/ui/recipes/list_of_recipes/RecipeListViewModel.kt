@@ -37,7 +37,6 @@ class RecipeListViewModel(
             _screenState.postValue(RecipeListScreenState(recipeList = cachedRecipe))
             val recipeList = recipesRepository.getRecipesListByCategoryId(category.id)
             if (recipeList != null) {
-
                 recipesRepository.insertRecipes(recipeList)
                 val imageUrl: String =
                     category.imageUrl.let { BASE_URL + "images/" + it }
