@@ -6,9 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.github.ilyashvetsov.recipes.RecipesApplication
 import com.github.ilyashvetsov.recipes.databinding.FragmentListCategoriesBinding
+import com.github.ilyashvetsov.recipes.di.AppContainer
 import com.github.ilyashvetsov.recipes.model.Category
 import com.github.ilyashvetsov.recipes.ui.UiEvent
 
@@ -16,7 +17,14 @@ class CategoriesListFragment : Fragment() {
     private var _binding: FragmentListCategoriesBinding? = null
     private val binding
         get() = _binding ?: throw IllegalStateException("Binding is not initialized")
-    private val viewModel by viewModels<CategoriesListViewModel>()
+    private lateinit var viewModel: CategoriesListViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val appContainer: AppContainer =
+            (requireActivity().application as RecipesApplication).appContainer
+        viewModel = appContainer.categoriesListViewModelFactory.create()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

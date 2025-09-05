@@ -2,67 +2,52 @@ package com.github.ilyashvetsov.recipes.data
 
 import com.github.ilyashvetsov.recipes.model.Category
 import com.github.ilyashvetsov.recipes.model.Recipe
-import com.github.ilyashvetsov.recipes.ui.BASE_URL
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class RecipesRepository(
-    private val recipeDatabase: RecipeDataBase
+    private val categoriesDao:CategoriesDao,
+    private val recipeDao: RecipeDao,
+    private val recipesApiService: RecipeApiService,
+    private val ioDispatcher:CoroutineDispatcher
 ) {
-    private val logging = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
-    private val client = OkHttpClient.Builder()
-        .addInterceptor(logging)
-        .build()
-    private var retrofit = Retrofit.Builder()
-        .client(client)
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-    private val recipesApiService = retrofit.create(RecipeApiService::class.java)
-    private val recipeDao: RecipeDao = recipeDatabase.recipeDao()
 
     suspend fun getCategoriesFromCache(): List<Category> {
-        return withContext(Dispatchers.IO) {
-            recipeDao.getAllCategories()
+        return withContext(ioDispatcher) {
+            categoriesDao.getAllCategories()
         }
     }
 
     suspend fun insertCategories(categories: List<Category>) {
-        withContext(Dispatchers.IO) {
-            recipeDao.insertCategories(categories = categories)
+        withContext(ioDispatcher) {
+            categoriesDao.insertCategories(categories = categories)
         }
     }
 
     suspend fun getRecipesFromCache(categoryId: Int): List<Recipe> {
-        return withContext(Dispatchers.IO) { recipeDao.getAllRecipes(categoryId = categoryId) }
+        return withContext(ioDispatcher) { recipeDao.getAllRecipes(categoryId = categoryId) }
     }
 
     suspend fun insertRecipes(recipes: List<Recipe>) {
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             recipeDao.insertRecipes(recipe = recipes)
         }
     }
 
     suspend fun getFavoritesFromCache(): List<Recipe> {
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             recipeDao.getFavorites()
         }
     }
 
     suspend fun insertFavorites(recipe: Recipe) {
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             recipeDao.insertFavorites(recipe = recipe)
         }
     }
 
     suspend fun getRecipeById(recipeId: Int): Recipe? {
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             try {
                 val recipe = recipesApiService.getRecipeById(recipeId)
                 recipe
@@ -73,20 +58,8 @@ class RecipesRepository(
         }
     }
 
-    suspend fun getRecipesListByIds(ids: String): List<Recipe>? {
-        return withContext(Dispatchers.IO) {
-            try {
-                val recipeList = recipesApiService.getRecipesListByIds(ids)
-                recipeList
-            } catch (e: Exception) {
-                e.printStackTrace()
-                null
-            }
-        }
-    }
-
     suspend fun getRecipesListByCategoryId(categoryId: Int): List<Recipe>? {
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             try {
                 val recipesList = recipesApiService.getRecipesListByCategoryId(categoryId)
                 recipesList.map { recipe -> recipe.copy(categoryId = categoryId) }
@@ -98,7 +71,7 @@ class RecipesRepository(
     }
 
     suspend fun getCategories(): List<Category>? {
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             try {
                 val listCategory = recipesApiService.getCategories()
                 listCategory

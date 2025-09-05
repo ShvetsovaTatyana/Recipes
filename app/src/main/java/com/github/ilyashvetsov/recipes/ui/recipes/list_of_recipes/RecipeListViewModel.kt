@@ -1,24 +1,23 @@
 package com.github.ilyashvetsov.recipes.ui.recipes.list_of_recipes
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.ilyashvetsov.recipes.data.RecipeDataBase
 import com.github.ilyashvetsov.recipes.data.RecipesRepository
 import com.github.ilyashvetsov.recipes.model.Category
 import com.github.ilyashvetsov.recipes.model.Recipe
 import com.github.ilyashvetsov.recipes.ui.BASE_URL
 import com.github.ilyashvetsov.recipes.ui.UiEvent
-import com.github.ilyashvetsov.recipes.ui.recipes.recipe.RecipeViewModel.RecipeScreenState
 import kotlinx.coroutines.launch
 
-class RecipeListViewModel(application: Application) : AndroidViewModel(application) {
+class RecipeListViewModel(
+    private val recipesRepository: RecipesRepository
+) : ViewModel() {
     private val _screenState: MutableLiveData<RecipeListScreenState> =
         MutableLiveData(RecipeListScreenState())
     val screenState: LiveData<RecipeListScreenState> = _screenState
-    private val recipesRepository = RecipesRepository(RecipeDataBase.getInstance(application))
+
 
     data class RecipeListScreenState(
         val category: Category? = null,
@@ -28,7 +27,7 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
 
     val uiEvent = MutableLiveData<UiEvent>()
 
-    fun showToast() {
+    private fun showToast() {
         uiEvent.postValue(UiEvent.Error("Ошибка получения данных"))
     }
 
