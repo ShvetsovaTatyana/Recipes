@@ -7,9 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.github.ilyashvetsov.recipes.data.RecipesRepository
 import com.github.ilyashvetsov.recipes.model.Category
 import com.github.ilyashvetsov.recipes.ui.UiEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CategoriesListViewModel(
+@HiltViewModel
+class CategoriesListViewModel @Inject constructor(
     private val recipesRepository: RecipesRepository
 ) : ViewModel() {
 

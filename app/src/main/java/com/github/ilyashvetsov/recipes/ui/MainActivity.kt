@@ -7,8 +7,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.findNavController
 import com.github.ilyashvetsov.recipes.R
 import com.github.ilyashvetsov.recipes.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 

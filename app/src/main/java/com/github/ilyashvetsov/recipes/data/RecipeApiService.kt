@@ -2,6 +2,7 @@ package com.github.ilyashvetsov.recipes.data
 
 import com.github.ilyashvetsov.recipes.model.Category
 import com.github.ilyashvetsov.recipes.model.Recipe
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
