@@ -9,9 +9,12 @@ import com.github.ilyashvetsov.recipes.model.Category
 import com.github.ilyashvetsov.recipes.model.Recipe
 import com.github.ilyashvetsov.recipes.ui.BASE_URL
 import com.github.ilyashvetsov.recipes.ui.UiEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RecipeListViewModel(
+@HiltViewModel
+class RecipeListViewModel @Inject constructor(
     private val recipesRepository: RecipesRepository
 ) : ViewModel() {
     private val _screenState: MutableLiveData<RecipeListScreenState> =

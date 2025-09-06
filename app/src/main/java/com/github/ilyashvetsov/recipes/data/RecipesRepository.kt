@@ -3,14 +3,17 @@ package com.github.ilyashvetsov.recipes.data
 import com.github.ilyashvetsov.recipes.model.Category
 import com.github.ilyashvetsov.recipes.model.Recipe
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class RecipesRepository(
-    private val categoriesDao:CategoriesDao,
+class RecipesRepository @Inject constructor(
+    private val categoriesDao: CategoriesDao,
     private val recipeDao: RecipeDao,
     private val recipesApiService: RecipeApiService,
-    private val ioDispatcher:CoroutineDispatcher
-) {
+    ) {
+
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 
     suspend fun getCategoriesFromCache(): List<Category> {
         return withContext(ioDispatcher) {
